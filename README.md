@@ -19,25 +19,25 @@ measurement, interpretation, and conjecture using explicit ledger tags:
 - `occurrence-theory.md` - main paper draft.
 - `occurrence_theory_audit.py` - numerical audit and verification script for
   the algebraic claims.
+- `exceptional_algebras_lab.py` - supporting exceptional algebra reproduction
+  module used by the audit.
 - `occurrence_theory_prompt.md` - source prompt and writing constraints used to
   generate the paper.
+- `.github/workflows/audit.yml` - CI workflow that compiles and runs the audit
+  scripts.
 - `LICENSE` - MIT license.
 
 ## Requirements
 
-The audit script requires Python 3.11 or newer, NumPy, and the verified
-`exceptional_algebras_lab` package.
+The audit script requires Python 3.11 or newer and NumPy. The verified
+`exceptional_algebras_lab` module is included in this repository and is used by
+the audit at runtime.
 
 `uv` is the preferred runner for local audit work:
 
 ```bash
 uv run python occurrence_theory_audit.py
 ```
-
-The verified `exceptional_algebras_lab` module is required at runtime, but its
-package source is not currently recorded in this repository. Until that source
-is added, `uv run` will prepare the Python environment and the audit will stop
-early if the module is unavailable.
 
 For editable console-script installation:
 
@@ -65,7 +65,7 @@ After installation, the same audit is also available as:
 occurrence-theory-audit
 ```
 
-The script exits early if `exceptional_algebras_lab` is unavailable.
+CI runs the audit workflow on pull requests and pushes to `main`.
 
 ## Status
 
