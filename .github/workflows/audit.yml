@@ -6,6 +6,10 @@ on:
     branches:
       - main
 
+permissions:
+  contents: read
+  id-token: write
+
 jobs:
   audit:
     name: Run audit scripts
@@ -53,9 +57,9 @@ jobs:
 
       - name: Verify isolated package install
         run: |
-          uv pip install --no-deps --target /tmp/occurrence-install .
+          uv pip install --target /tmp/occurrence-install .
           cd /tmp
-          PYTHONPATH=/tmp/occurrence-install python - <<'PY'
+          PYTHONPATH=/tmp/occurrence-install "${pythonLocation}/bin/python" - <<'PY'
           import exceptional_algebras_lab
           import occurrence_theory_audit
           import topographo
