@@ -55,6 +55,24 @@ from topographo.core import CayleyDicksonAlgebra, verify_gates
 from topographo.ssd import SedenionAlgebra
 ```
 
+API documentation is generated with `pdoc` and published to GitHub Pages:
+<https://theswanfactory.github.io/occurence/>
+
+To build it locally:
+
+```bash
+uv run pdoc \
+  topographo \
+  topographo.core \
+  topographo.core.algebra \
+  topographo.core.cayley_dickson \
+  topographo.core.gates \
+  topographo.ssd \
+  topographo.ssd.channel \
+  topographo.ssd.sedenion \
+  -o site
+```
+
 ## Run the Audit
 
 From the repository root:

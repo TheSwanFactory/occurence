@@ -16,6 +16,12 @@ dependencies = [
   "numpy"
 ]
 
+[project.urls]
+Homepage = "https://github.com/TheSwanFactory/occurence"
+Documentation = "https://theswanfactory.github.io/occurence/"
+Source = "https://github.com/TheSwanFactory/occurence"
+Issues = "https://github.com/TheSwanFactory/occurence/issues"
+
 [project.scripts]
 occurrence-theory-audit = "occurrence_theory_audit:main"
 
@@ -24,3 +30,8 @@ py-modules = ["occurrence_theory_audit", "exceptional_algebras_lab"]
 
 [tool.setuptools.packages.find]
 include = ["topographo*"]
+
+[dependency-groups]
+dev = [
+    "pdoc>=16.0.0",
+]
