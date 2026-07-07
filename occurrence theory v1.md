@@ -1,10 +1,11 @@
 # Occurrence Theory
 ## An Orientation of Sedenion Settlement Dynamics
 
-**E. N. Prabhakar** (Radical Centrism / iHack.us)
+**E. N. Prabhakar** ([Radical Centrism](https://radicalcentrism.org) / [iHack.us](https://ihack.us))
 with **Bench d'Claude** (Anthropic) and **Précis d'ChatGPT** (OpenAI)
 
-*Draft v1.2 — July 7, 2026*
+*Draft v1.3 — July 7, 2026*
+*(v1.3: Submission-ready editorial pass — explicit two-paper declaration (SSD + OT independent); italicized core phrase ("algebra is not incomplete, but overly complete"); softened physics/logic observation; removed "History will remember..." self-prediction; added Section 8 interpretive restraint caveat; hyperlinked author sites.)*
 *(v1.2: Editorial pass — softened CORE verdict language; added No-Autonomy motivation paragraph; clarified notation (τ for event-strain); expanded Section 7; added independent verification requirement to Appendix; improved title and Aut-orbit language throughout.)*
 *(v1.1: Moreno citation precisified; Brown generator verified; design conjecture → Theorem 3.13; Contrast identification → uniqueness theorem.)*
 
@@ -25,15 +26,15 @@ on End(ℝ¹⁶), where Σ is the [unit zero-divisor variety](https://en.wikiped
 
 ---
 
-## 2. Motivation
+## 2. Motivation and Structure
 
-The mathematics developed here separates into three layers, and the separation is itself a result.
+**This paper contains two independent mathematical contributions.** The first is the theory of Sedenion Settlement Dynamics (SSD): the complete algebraic and spectral characterization of the unique Aut(𝕊)-invariant channel on the sedenion zero-divisor crack. The second is the definition of Occurrence Theory (OT): the oriented dynamical framework obtained by adjoining one external choice to SSD. **Acceptance of the second contribution is not required for the correctness of the first.** The two stand independently, and readers interested only in the algebra of SSD need not engage with the interpretations of OT.
 
 **Sedenion Settlement Dynamics** is the unoriented object: an algebra, a distinguished singular orbit inside it, a measure forced by symmetry, and the channel these determine. Every statement in this layer is theorem or exact computation. Nothing in it refers to time, events, or states.
 
 **Occurrence Theory** is SSD equipped with one additional structure — an *orientation* assigning the two slots of multiplication the operational roles of event (sampled) and state (retained). Section 4 proves this orientation is genuinely external: the algebra cannot supply it (No-Autonomy), cannot detect it (role symmetry), and cannot do without it if anything is to evolve. OT is therefore a *definition on top of a discovery*, and the boundary between the two is theorem-shaped.
 
-**Protology (CORE)** — Contrast, Orientation, Re-Entry (Prabhakar 2026) — is a prior, independently developed generative language. Section 8 tests, and only partially accepts, the claim that SSD realizes it.
+**Protology (CORE)** — Contrast, Orientation, Re-Entry (Prabhakar 2026) — is a prior, independently developed generative language. Section 8 tests whether SSD realizes it, maintaining restraint about the depth of the correspondence.
 
 The discipline throughout: *discovery* is what the algebra forces; *orientation* is the minimal choice we add; everything else is interpretation and is labeled as such.
 
@@ -59,7 +60,7 @@ The discipline throughout: *discovery* is what the algebra forces; *orientation*
 
 > **CONSEQUENCE (The mathematical necessity of external orientation):**
 > 
-> **𝕊 contains algebraically complete pre-dynamics — states (the space of rays), isometric clocks (via L_x), an irreversibility locus (ker L_z, supported on Σ), a cost metric (norm dissipation), and conservation laws (Tr M = 16) — yet *provably cannot select* among its own internal morphisms.** This is not a gap in the algebra; it is a theorem about the algebra's indifference. The algebra is indifferent between left and right, between event and state, between retained and sampled. Physics imposes preference via observation; logic imposes it via syntax; but 𝕊 itself cannot. **This is why OT requires external orientation — not because the algebra is incomplete, but because it is overly complete.** The selection has to come from outside, and this fact is itself a theorem, not an assumption.
+> **𝕊 contains algebraically complete pre-dynamics — states (the space of rays), isometric clocks (via L_x), an irreversibility locus (ker L_z, supported on Σ), a cost metric (norm dissipation), and conservation laws (Tr M = 16) — yet *provably cannot select* among its own internal morphisms.** This is not a gap in the algebra; it is a theorem about the algebra's indifference. The algebra is indifferent between left and right, between event and state, between retained and sampled. Different applications impose different orientations according to their own semantics, but 𝕊 itself cannot. ***The algebra is not incomplete, but overly complete.*** The selection has to come from outside, and this fact is itself a theorem, not an assumption.
 
 **Theorem 3.9 (axis pair).** [T] (a) J := R_{e₈} satisfies J² = −I on all of 𝕊, Jᵀ = −J, and [L_{e₈}, R_{e₈}] = 0 (all 0.0 [C]). Thus 𝕊 ≅ ℂ⁸ with S = ℂ¹ and W = ℂ⁷; the pencil's 2-plane fibers are the complex lines. (b) For every z ∈ Σ: {L_{e₈}, L_z} = 0 (hulls contain the spine; Clifford relations are hull-exact, defect 1.3 × 10⁻¹⁵ [C]); hence L_zᵀ L_{e₈} L_z = −L_{e₈} M_z and
 
@@ -160,7 +161,7 @@ CORE (Contrast, Orientation, Re-Entry) is treated strictly as a protological lan
 
 **Echo, priced at zero.** [I] The forced 3 = 1 ⊕ 2 democracy and the inevitability (not primitivity) of triads under CORE are consonant; consonance is not derivation.
 
-**Verdict.** SSD realizes a precise algebraic analogue of all three CORE primitives, each with a uniqueness theorem behind it: **Contrast** = the unique invariant anti-automorphic involution (conjugation); **Orientation** = the provably external and provably minimal ℤ₂ choices upon it (the role bit; the sign of i); **Re-Entry** = the retained slot, with recurrence/recursion split certified spectrally (isometric ledger vs. Φ(L_{e₈}) = −L_{e₈}). CORE is a consistent protological reading of OT, and the three primitives align with the three load-bearing theorems of the orientation layer.
+**Verdict.** SSD realizes a precise algebraic analogue of all three CORE primitives, each with a uniqueness theorem behind it: **Contrast** = the unique invariant anti-automorphic involution (conjugation); **Orientation** = the provably external and provably minimal ℤ₂ choices upon it (the role bit; the sign of i); **Re-Entry** = the retained slot, with recurrence/recursion split certified spectrally (isometric ledger vs. Φ(L_{e₈}) = −L_{e₈}). CORE provides a consistent protological reading of OT. The three primitives align with the three load-bearing theorems of the orientation layer. **However, whether these mathematical objects are the *realization* of CORE's primitives, or merely precise algebraic analogues of them, remains an interpretive question.** The correspondence is strong enough to be remarkable; it is constrained enough to be falsifiable.
 
 ---
 
@@ -199,29 +200,25 @@ The settlement channel spectrum: an 84 × 84 matrix, trace 1, with eigenvalues i
 
 ---
 
-## The Architecture and Its Heart
+## The Heart of the Paper
 
-The paper has discovered a hierarchy, and it deserves to be stated plainly:
+The central claim is not about occurrence, and not primarily about dynamics.
 
-> **Sedenion Settlement Dynamics** (discovered — the algebra's complete internal structure)
+**The central claim is about orientation.**
+
+The paper discovers that sedenion settlement dynamics is completely determined by the algebra — except for exactly one externally supplied bit: the orientation of the multiplication. No-Autonomy proves why this bit must be external. Contrast realizes why it cannot be chosen arbitrarily. Re-Entry explains what its choice means dynamically. Together they form a hierarchy:
+
+> SSD (discovered)
 > ↓
-> **Orientation** (chosen — the single external bit the algebra cannot supply)
+> orientation (chosen)
 > ↓
-> **Occurrence Theory** (the study of what the choice implies)
+> Occurrence Theory (the study of consequences)
 
-**What the paper is really about** is none of these things individually. It is about the *gap* between them. It is about why that gap exists. It is about what that gap means mathematically.
+**The deepest conceptual achievement is not what an occurrence is.**
 
-The No-Autonomy Theorem proves why the gap must be external: the algebra is complete enough to contain everything *except* a preference between two symmetric possibilities. CORE's Contrast shows why the gap is real: conjugation is the unique canonical involution, but the algebra cannot decide which end is +i and which is −i. Re-Entry shows what choosing means: it is to break symmetry in exactly one bit, and that bit replicates through all dynamics as a clock.
+*Occurrence Theory does not claim what an occurrence is. It defines what it means to orient one.*
 
-**The deepest conceptual achievement of the paper:**
-
-**Occurrence Theory does not claim what an occurrence is. It defines what it means to orient one.**
-
-The sedenions know what *can* happen. They know everything about the multiplication, the singular orbit, the equilibrium, the spectrum, the time scales, the clocks. They know nothing about which way around to count — which factor acts, which receives. We supply that bit. And once we do, everything else follows as theorem, not assumption.
-
-The word "occurrence" is not the discovery. The discovery is that *orientation* is the missing piece, and that it is missing *by necessity*, not by accident. That the mathematics forced it to be external. That is the true finding.
-
-History will remember this not as "the discovery of Occurrence Theory" but as "the observation that sedenion settlement dynamics is completely determined by the algebra up to a single orientation bit, and that no internal structure can provide that bit." That is discovery. The rest is naming.
+The word "occurrence" marks a fact: between a sampled element and a retained one, something happened. But the mathematics underneath is simpler and stranger. The mathematics says: the sedenions know everything about *what* can happen. They know nothing about *which way around* to happen. We supply that bit. And once we do, everything else is theorem.
 
 ---
 
