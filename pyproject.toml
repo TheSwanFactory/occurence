@@ -20,4 +20,7 @@ dependencies = [
 occurrence-theory-audit = "occurrence_theory_audit:main"
 
 [tool.setuptools]
-py-modules = ["occurrence_theory_audit"]
+py-modules = ["occurrence_theory_audit", "exceptional_algebras_lab"]
+
+[tool.setuptools.packages.find]
+include = ["topographo*"]

@@ -25,11 +25,51 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Compile Python scripts
-        run: uv run python -m py_compile occurrence_theory_audit.py exceptional_algebras_lab.py
+      - name: Compile Python modules
+        run: |
+          uv run python -m py_compile \
+            occurrence_theory_audit.py \
+            exceptional_algebras_lab.py \
+            topographo/__init__.py \
+            topographo/core/__init__.py \
+            topographo/core/algebra.py \
+            topographo/core/cayley_dickson.py \
+            topographo/core/gates.py \
+            topographo/ssd/__init__.py \
+            topographo/ssd/channel.py \
+            topographo/ssd/sedenion.py
+
+      - name: Verify importable package API
+        run: |
+          uv run python - <<'PY'
+          from topographo.core import CayleyDicksonAlgebra, verify_gates
+          from topographo.ssd import SedenionAlgebra, average_metric_operator
+
+          assert all(result.passed for result in verify_gates())
+          assert CayleyDicksonAlgebra(8).dim == 8
+          sedenions = SedenionAlgebra()
+          assert average_metric_operator(sedenions, sedenions.sample_crack(4)).shape == (16, 16)
+          PY
+
+      - name: Verify isolated package install
+        run: |
+          uv pip install --no-deps --target /tmp/occurrence-install .
+          cd /tmp
+          PYTHONPATH=/tmp/occurrence-install python - <<'PY'
+          import exceptional_algebras_lab
+          import occurrence_theory_audit
+          import topographo
+
+          assert hasattr(exceptional_algebras_lab, "cayley_dickson_table")
+          assert hasattr(occurrence_theory_audit, "main")
+          assert hasattr(topographo, "CayleyDicksonAlgebra")
+          PY
 
       - name: Run Occurrence Theory audit
         run: uv run python occurrence_theory_audit.py
+
+      - name: Run Occurrence Theory audit console script
+        run: uv run occurrence-theory-audit
 
       - name: Run exceptional algebra lab reproduction
         run: uv run python exceptional_algebras_lab.py

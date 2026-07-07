@@ -16,6 +16,8 @@ measurement, interpretation, and conjecture using explicit ledger tags:
 
 ## Files
 
+- `topographo/` - reusable Python package for Cayley-Dickson algebra,
+  validation gates, operators, and SSD helpers.
 - `occurrence-theory.md` - main paper draft.
 - `occurrence_theory_audit.py` - numerical audit and verification script for
   the algebraic claims.
@@ -43,6 +45,14 @@ For editable console-script installation:
 
 ```bash
 uv pip install -e .
+```
+
+After installation, the core math layer is importable without running the
+Occurrence Theory audit narrative:
+
+```python
+from topographo.core import CayleyDicksonAlgebra, verify_gates
+from topographo.ssd import SedenionAlgebra
 ```
 
 ## Run the Audit
