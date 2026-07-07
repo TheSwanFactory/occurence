@@ -143,7 +143,7 @@ wheels = [
 ]
 
 [[package]]
-name = "occurrence-theory"
+name = "topographo"
 version = "0.1.0"
 source = { editable = "." }
 dependencies = [

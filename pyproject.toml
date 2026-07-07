@@ -3,12 +3,12 @@ requires = ["setuptools>=69"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "occurrence-theory"
+name = "topographo"
 version = "0.1.0"
-description = "Research notes and audit tooling for Occurrence Theory."
+description = "Reusable Cayley-Dickson and sedenion settlement math for Topographo."
 readme = "README.md"
 requires-python = ">=3.11"
-license = { text = "MIT" }
+license = "MIT"
 authors = [
   { name = "The Swan Factory" }
 ]

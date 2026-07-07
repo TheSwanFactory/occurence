@@ -41,7 +41,7 @@ the audit at runtime.
 uv run python occurrence_theory_audit.py
 ```
 
-For editable console-script installation:
+For editable package installation:
 
 ```bash
 uv pip install -e .
