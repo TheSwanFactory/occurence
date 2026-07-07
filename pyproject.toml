@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "occurrence-theory"
+version = "0.1.0"
+description = "Research notes and audit tooling for Occurrence Theory."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [
+  { name = "The Swan Factory" }
+]
+dependencies = [
+  "numpy"
+]
+
+[project.scripts]
+occurrence-theory-audit = "occurrence_theory_audit:main"
+
+[tool.setuptools]
+py-modules = ["occurrence_theory_audit"]
