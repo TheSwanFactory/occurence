@@ -558,7 +558,7 @@ def main():
     print("  Occurrence Theory is mathematically sound, genuinely novel,")
     print("  and survives full algebraic audit.")
     print()
-    print("For details, see: occurrence_theory_v1.md")
+    print("For details, see: occurrence-theory.md")
     print()
 
 
