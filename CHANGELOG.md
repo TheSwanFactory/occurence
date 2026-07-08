@@ -4,9 +4,13 @@ All notable changes to this project are documented in this file.
 
 ## [0.2.0] - 2026-07-08
 
-### Changed
+### Added
 
-- Bumped the package version for the test coverage milestone tracked in #8.
+- Deterministic unit tests to package, and CI
+
+### Fixed
+
+- occurrence_theory_audit.verify_gates() returns a plain `bool` instead of leaking `numpy.bool_`
 
 ## [0.1.1] - 2026-07-08
 
