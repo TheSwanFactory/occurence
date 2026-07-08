@@ -77,12 +77,13 @@ class CayleyDicksonAlgebra:
         """Cayley-Dickson conjugation."""
         return np.concatenate([[x[0]], -x[1:]])
 
-    def sample_basis_zero_divisors(self, n: int) -> np.ndarray:
-        """Sample from basis-form unit zero divisors in this algebra.
+    def basis_zero_divisors(self) -> np.ndarray:
+        """Return the full basis-form unit zero-divisor design.
 
-        In dimension 16 this samples the finite 84-element basic crack used by
-        the audit as a design for the continuum zero-divisor orbit. These
-        samples are the usual starting vertices for TGT zero-divisor graphs.
+        In dimension 16 this is the finite 84-element basic crack used by the
+        audit as a design for the continuum zero-divisor orbit. Use this
+        deterministic design for exact finite certificates such as the
+        `E[M_z] = I` equilibrium check.
         """
         zero_divisors = []
         for i, j in combinations(range(1, self.dim), 2):
@@ -93,8 +94,12 @@ class CayleyDicksonAlgebra:
                     zero_divisors.append(u)
         if not zero_divisors:
             raise ValueError("no basis-form zero divisors found")
-        samples = np.array(zero_divisors)
-        return samples[self.rng.integers(0, len(samples), n)]
+        return np.array(zero_divisors)
+
+    def sample_basis_zero_divisors(self, n: int) -> np.ndarray:
+        """Sample with replacement from basis-form unit zero divisors."""
+        zero_divisors = self.basis_zero_divisors()
+        return zero_divisors[self.rng.integers(0, len(zero_divisors), n)]
 
     def sample_pure_pair(self, n: int) -> np.ndarray:
         """Sample random unit pure-pair events for the sedenion crack model.

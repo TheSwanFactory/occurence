@@ -11,7 +11,7 @@ zero-divisor crack as a topological, graph-like, and operator-theoretic object.
 The basic workflow is:
 
 1. Build the 16-dimensional Cayley-Dickson algebra, the sedenions.
-2. Sample or enumerate unit zero divisors, the distinguished singular locus
+2. Enumerate or sample unit zero divisors, the distinguished singular locus
    called the crack.
 3. Turn those events into multiplication operators and diagnostics.
 4. Build finite graphs or channels whose edges/transitions are defined by
@@ -57,7 +57,7 @@ from topographo.ssd import SedenionAlgebra, average_metric_operator
 assert all(result.passed for result in verify_gates())
 
 algebra = SedenionAlgebra()
-events = algebra.sample_crack(84)
+events = algebra.basis_zero_divisors()
 mean_metric = average_metric_operator(algebra, events)
 
 equilibrium_error = np.linalg.norm(mean_metric - np.eye(algebra.dim))
@@ -71,7 +71,7 @@ import numpy as np
 from topographo.ssd import SedenionAlgebra
 
 algebra = SedenionAlgebra()
-events = algebra.sample_crack(84)
+events = algebra.basis_zero_divisors()
 operators = [algebra.left_operator(z) for z in events]
 
 graph = {i: [] for i in range(len(events))}
