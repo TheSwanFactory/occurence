@@ -163,7 +163,7 @@ def test_zero_divisor_graph(OT):
     print("="*70)
     print("Structural diagnostic: not one of the registered algebra gates.")
     
-    zds = OT.sample_crack(84)
+    zds = OT.basis_zero_divisors()
     
     # Build annihilation graph: edges connect z, w if L_z L_w = 0 (rank deficiency)
     graph = {i: [] for i in range(84)}
@@ -245,21 +245,32 @@ def test_invariant_measure(OT):
     print("TEST 9B: INVARIANT MEASURE THEOREM")
     print("="*70)
     
-    zds = OT.sample_crack(84)
+    zds = OT.basis_zero_divisors()
     Ls = [OT.Lop(u) for u in zds]
     
-    # E[M_z] = I exactly (measure-independent, only support and trace)
+    # E[M_z] = I exactly on the full 84-point basis crack design.
     M84 = sum(L.T @ L for L in Ls) / len(Ls)
-    print(f"[T9b] ||E[M_z] - I|| on 84-crack = {np.linalg.norm(M84 - np.eye(OT.dim)):.2e}")
+    exact_residual = np.linalg.norm(M84 - np.eye(OT.dim))
+    print(f"[T9b] ||E[M_z] - I|| on full 84-crack design = {exact_residual:.2e}")
+    if exact_residual >= 1e-12:
+        raise AssertionError("full 84-crack design failed the E[M_z] = I certificate")
     
-    # Continuum: random pure pairs
+    # Continuum: random pure pairs. This is a Monte Carlo diagnostic, not a
+    # machine-zero theorem certificate.
     acc = np.zeros((OT.dim, OT.dim))
-    for _ in range(3000):
+    continuum_samples = 3000
+    for _ in range(continuum_samples):
         z = OT.sample_pure_pair(1)[0]
         L = OT.Lop(z)
         acc += L.T @ L
     
-    print(f"[T9b] ||E[M_z] - I|| on continuum = {np.linalg.norm(acc / 3000 - np.eye(OT.dim)):.2e}")
+    mc_residual = np.linalg.norm(acc / continuum_samples - np.eye(OT.dim))
+    mc_threshold = 1e-1
+    mc_status = "OK" if mc_residual < mc_threshold else "WARN"
+    print(
+        f"[M9b] ||E[M_z] - I|| on continuum Monte Carlo "
+        f"(n={continuum_samples}) = {mc_residual:.2e} ({mc_status}, threshold {mc_threshold:.1e})"
+    )
     
     # Settlement channel spectrum
     K = sum(np.kron(L, L) for L in Ls) / len(Ls)
@@ -513,7 +524,7 @@ def main():
     print("Summary:")
     print("  - 14 tests completed")
     print("  - All gates verified (composition, antisymmetry, quadratic, Moufang)")
-    print("  - All theorem-grade claims at machine zero (< 1e-12)")
+    print("  - Registered theorem-grade certificates pass machine-zero thresholds (< 1e-12)")
     print("  - Novel mathematical structure identified: Occurrence Theory")
     print("  - External assumptions: 1 (event/state orientation; rate optional)")
     print("  - Deepest invariant: G₂-equivariant settlement channel spectrum")
