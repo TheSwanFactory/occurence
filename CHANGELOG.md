@@ -17,6 +17,12 @@ All notable changes to this project are documented in this file.
   `verify/occurrence_i_cabarius.md`; `verify/` is the single home for all Paper
   verification (see `verify/README.md`).
 - Move library tests into `topographo/tests/` and theory tests into `verify/`.
+- CI: gate the GitHub Pages docs deploy to `main` only (the `github-pages`
+  environment permits only the default branch; tag pushes publish to PyPI and
+  reuse the docs already deployed from `main`).
+- CI: bump GitHub Actions onto the Node 24 runtime (`actions/checkout` v7,
+  `astral-sh/setup-uv` v7, `actions/upload-artifact` and
+  `actions/download-artifact` v7).
 
 ### Added
 
