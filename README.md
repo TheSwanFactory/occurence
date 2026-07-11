@@ -65,7 +65,7 @@ replacement and is intended for stochastic diagnostics, not machine-zero
 theorem gates.
 
 API documentation is generated with `pdoc` and published to GitHub Pages:
-<https://theswanfactory.github.io/occurence/>
+<https://theswanfactory.github.io/occurrence/>
 
 To build it locally:
 
