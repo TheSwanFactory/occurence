@@ -17,10 +17,10 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/TheSwanFactory/occurence"
-Documentation = "https://theswanfactory.github.io/occurence/"
-Source = "https://github.com/TheSwanFactory/occurence"
-Issues = "https://github.com/TheSwanFactory/occurence/issues"
+Homepage = "https://github.com/TheSwanFactory/occurrence"
+Documentation = "https://theswanfactory.github.io/occurrence/"
+Source = "https://github.com/TheSwanFactory/occurrence"
+Issues = "https://github.com/TheSwanFactory/occurrence/issues"
 
 [project.scripts]
 occurrence-theory-audit = "occurrence_theory_audit:main"
