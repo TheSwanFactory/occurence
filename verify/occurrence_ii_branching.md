@@ -21,6 +21,19 @@ The script is [`occurrence_ii_branching.sage`](occurrence_ii_branching.sage). Ei
 
 ## Result
 
+Confirmed locally with SageMath 10.9 (`sage verify/occurrence_ii_branching.sage`,
+exit `0`):
+
+```text
+7  (standard): dim 7
+    1 x A2(1,0) (dim 3)   1 x A2(0,1) (dim 3)   1 x A2(0,0) (dim 1)
+    -> dims [1, 3, 3]
+14 (adjoint 𝔤₂): dim 14
+    1 x A2(1,1) (dim 8)   1 x A2(1,0) (dim 3)   1 x A2(0,1) (dim 3)
+    -> dims [3, 3, 8]
+= 8 ⊕ 3 ⊕ 3bar? True     = 8 ⊕ 6? False
+```
+
 - **Sanity check passes:** the `7` (standard rep) branches as `3 + 3̄ + 1`
   (dims `[1, 3, 3]`), confirming this is the canonical SU(3) under which the
   standard rep splits that way.
