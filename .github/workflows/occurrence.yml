@@ -45,8 +45,8 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Install topographo
-        run: uv pip install --system .
+      - name: Install topographo (plus pytest for the verify suite)
+        run: uv pip install --system . pytest
 
       - name: Reviewer-independence guard
         # Reviewer cells (occurrence_<paper>_<handle>.*, i.e. everything under
