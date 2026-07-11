@@ -3,6 +3,31 @@
 
 All notable changes to this project are documented in this file.
 
+## [0.3.0] - 2026-07-11
+
+### Changed
+
+- Carve the library/consumer seam (issue #13). `topographo` is now a standalone
+  package with its own CI (`topographo.yml`), and occurrence (paper, audit,
+  reviews) is a consumer with its own CI (`occurrence.yml`).
+- Move `exceptional_algebras_lab.py` into the package as
+  `topographo.exceptional`; it now imports `cayley_dickson_table` from
+  `topographo.core` (single source of truth) instead of carrying its own copy.
+- Move the audit to `verify/occurrence_i_audit.py` and `VERIFICATION.md` to
+  `verify/occurrence_i_cabarius.md`; `verify/` is the single home for all Paper
+  verification (see `verify/README.md`).
+- Move library tests into `topographo/tests/` and theory tests into `verify/`.
+
+### Added
+
+- Unit tests for the exceptional-algebra layer (`topographo/tests/test_exceptional.py`).
+- Reviewer-independence guard in `occurrence.yml`.
+
+### Removed
+
+- The `occurrence-theory-audit` console script and the top-level `py-modules`
+  entries; `pip install .` now ships only `topographo`.
+
 ## [0.2.1] - 2026-07-10
 
 ### Added
@@ -46,6 +71,8 @@ All notable changes to this project are documented in this file.
   algebra reproduction module.
 - GitHub Actions audit workflow and `pdoc` documentation setup.
 
+[0.3.0]: https://github.com/TheSwanFactory/occurrence/releases/tag/v0.3.0
+[0.2.1]: https://github.com/TheSwanFactory/occurrence/releases/tag/v0.2.1
 [0.2.0]: https://github.com/TheSwanFactory/occurrence/releases/tag/v0.2.0
 [0.1.1]: https://github.com/TheSwanFactory/occurrence/releases/tag/v0.1.1
 [0.1.0]: https://github.com/TheSwanFactory/occurrence/releases/tag/v0.1.0

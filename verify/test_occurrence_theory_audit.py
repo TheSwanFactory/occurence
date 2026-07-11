@@ -1,4 +1,4 @@
-import occurrence_theory_audit as audit
+import occurrence_i_audit as audit
 
 
 def test_audit_gate_function_returns_true_and_reports_all_gates(capsys):

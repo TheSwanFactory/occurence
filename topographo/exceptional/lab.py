@@ -15,33 +15,18 @@ Morse-Bott Singularities":
   7. (optional) anisotropy audit of the octonion cubic well from the CSV
 
 Everything is measured under scale-RELATIVE tolerances and cross-checked; no
-result is assumed. Run:  python3 exceptional_algebras_lab.py
+result is assumed. Run:  python3 -m topographo.exceptional.lab
 """
 import numpy as np
+
+# Single source of truth for the Cayley-Dickson structure tensor: this module's
+# original `cayley_dickson_table` was the ancestor `topographo.core` was carved
+# from (#4), so import the core version rather than carrying a private copy.
+from topographo.core import cayley_dickson_table
 
 # ----------------------------------------------------------------------
 # Octonions via the Cayley-Dickson construction (R -> C -> H -> O)
 # ----------------------------------------------------------------------
-def cayley_dickson_table(dim):
-    """Structure tensor C[i,j,k] with (e_i e_j) = sum_k C[i,j,k] e_k."""
-    def mul(a, b):
-        n = len(a)
-        if n == 1:
-            return np.array([a[0] * b[0]])
-        h = n // 2
-        a1, a2, b1, b2 = a[:h], a[h:], b[:h], b[h:]
-        conj = lambda x: np.concatenate([[x[0]], -x[1:]])
-        z1 = mul(a1, b1) - mul(conj(b2), a2)
-        z2 = mul(b2, a1) + mul(a2, conj(b1))
-        return np.concatenate([z1, z2])
-    C = np.zeros((dim, dim, dim))
-    for i in range(dim):
-        for j in range(dim):
-            ei, ej = np.zeros(dim), np.zeros(dim)
-            ei[i] = ej[j] = 1.0
-            C[i, j] = mul(ei, ej)
-    return C
-
 def relative_nullity(M, rel=1e-9):
     """Nullity of the domain of M under a scale-RELATIVE cutoff."""
     s = np.linalg.svd(M, compute_uv=False)
@@ -261,7 +246,8 @@ def albert_g2_decomposition(alb):
     print(f"    => J3(O) = 1^(+6) (+) 7^(+3) under g2  (6 trivial + 3x7)")
 
 
-if __name__ == "__main__":
+def main():
+    """Run the full exceptional-algebra reproduction as a script."""
     print("=" * 68)
     octonion_g2()
     alb = Albert()
@@ -272,3 +258,7 @@ if __name__ == "__main__":
     albert_g2_decomposition(alb)
     octonion_anisotropy()
     print("=" * 68)
+
+
+if __name__ == "__main__":
+    main()

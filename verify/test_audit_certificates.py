@@ -7,7 +7,7 @@ audit. Each test below breaks something and asserts the audit notices.
 import numpy as np
 import pytest
 
-import occurrence_theory_audit as audit
+import occurrence_i_audit as audit
 
 
 @pytest.fixture(autouse=True)
