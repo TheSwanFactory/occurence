@@ -11,9 +11,9 @@ It is pure representation theory about the symmetry group and does **not** touch
 
 ## How to run
 
-The script is [`g2_su3_branching.sage`](g2_su3_branching.sage). Either:
+The script is [`occurrence_ii_branching.sage`](occurrence_ii_branching.sage). Either:
 
-- `sage verify/g2_su3_branching.sage`, or
+- `sage verify/occurrence_ii_branching.sage`, or
 - paste it into **[SageMathCell](https://sagecell.sagemath.org)** (free, no
   login) and press *Evaluate*.
 

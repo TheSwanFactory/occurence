@@ -11,7 +11,7 @@
 # `topographo` and of the released `data/kraus84.npz`.
 #
 # Run:
-#   sage verify/g2_su3_branching.sage
+#   sage verify/occurrence_ii_branching.sage
 # or paste into SageMathCell (https://sagecell.sagemath.org), no install needed.
 #
 # What to look for:
