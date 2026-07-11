@@ -220,15 +220,9 @@ Verified: max deviation 1.2·10⁻¹⁵ over random samples. The transported spi
 
 The gap between annealed and quenched exponents is pure Jensen curvature: survivors are systematically spine-enriched, and the arrow of the process is paid for in fluctuation, not in mean. The closed form of s\* is open (candidate 1/8 + 1/147 sits at 1.7σ; [OT] Open Problem 1).
 
-### 4.4 Lindblad lift
+### 4.4 Continuous-time limit (deferred to Conjecture C4)
 
-**Theorem 4.4 (Lindblad Liftability). [FORCED]** The Born Channel Φ admits a continuous-time Lindblad superoperator L such that Φ = exp(L). If such an embedding exists, the 𝔭-eigenspace of Φ corresponds to the generator eigenvalue log 𝔭 < 0.
-
-By Definition 3.5, the continuous decay rate is then γ_𝔭 = −log 𝔭 ≈ 0.7035 per unit time.
-
-Verified: ‖Φ − exp(L)‖ = 8.8·10⁻¹⁴. All eigenvalues of L are real. The mapping is trace-preserving when tested on random density operators: max |Tr(Φ(ρ)) − Tr(ρ)| = 6.7·10⁻¹⁶ over 2000 trials.
-
-**Important caveat:** The Lindblad lift is not unique. There exist infinitely many continuous-time generators that reduce to Φ in the discrete limit, each corresponding to a different "time parametrization." The question of which continuous limit is "physical"—and whether the Doob h-transform selects a canonical one—is Conjecture C4.
+**Remark 4.4 (No forced Lindblad lift).** It is tempting to posit a continuous-time Lindblad generator L with Φ = exp(L), which would give the 𝔭-mode the continuous decay rate γ_𝔭 = −log 𝔭 ≈ 0.7035 (Definition 3.5). No such *real* generator exists, and for a forced reason. By Theorem 3.2, Φ is singular — its 0-eigenspace has dimension 100 — whereas exp(L) is invertible for every bounded L; and the peripheral −1 mode is simple, so Φ has no real logarithm (log(−1) = iπ). This is exactly the obstruction §5 and Conjecture C4 identify: the ℤ₂ conjugation J → −J has no connected path to the identity. Whether the channel's own structure canonically selects an embedding in some conditional or complexified sense, and whether that embedding reproduces the peripheral ℤ₂ at settlement times, is **Conjecture C4** and **Open Problem 2**, not a forced result. Accordingly, γ_𝔭 is defined only conditionally on such an embedding.
 
 ---
 
@@ -337,7 +331,7 @@ If the channel does not canonically select such a structure, or if the resulting
 - The asymptotic dynamics on span{I, J} ≅ ℂ consist of the exact ℤ₂ automorphism: I remains fixed, J alternates sign J → −J → J.
 - Under complex identification, this acts as complex conjugation.
 - All nonperipheral eigenvalues decay geometrically (Theorem 5.1).
-- The Born Channel lifts to a continuous-time Lindblad superoperator L with Φ = exp(L); decay rates are exact and real (Theorem 4.4).
+- Φ has *no* real continuous-time generator: it is singular (100-dimensional 0-eigenspace, Theorem 3.2) and its −1 mode is simple, so no real L satisfies Φ = exp(L) (Remark 4.4). Any continuous embedding must be conditional or complexified — which is the substance of this conjecture, not an established fact.
 
 **Open:**
 Does this ℤ₂ conjugation automorphism embed into a nontrivial continuous-time unitary dynamics on a larger invariant space; arise as a stroboscopic restriction of such unitary flow; or remain fundamentally discrete?
@@ -405,7 +399,7 @@ The five conjectures rest on exact mathematics, but several components require i
 | The 14-dim G₂-invariant antisymmetric sector | FORCED | Theorem 3.5 |
 | Born quotient identity (single step, pointwise exact) | FORCED | Theorem 4.3 |
 | Mean strain balance: E[τ \| x] = 0 (normalization cost) | FORCED | Theorem 4.1 |
-| Lindblad liftability: decay rates real, exact | FORCED | Theorem 4.4 |
+| No real Lindblad lift (Φ singular; −1 mode simple) | FORCED | Theorem 3.2 / Remark 4.4 |
 | Peripheral spectrum {±1}; peripheral algebra span{I, J} ≅ ℂ with exact ℤ₂ automorphism | FORCED | Theorem 5.1 |
 | 4-regular annihilation graph (seven disconnected components, Fano structure) | FORCED | Theorem 6.1 |
 | **—** | **—** | **—** |
@@ -692,7 +686,7 @@ These are explicit questions requiring specialist input or further computation.
 Is the stationary spine share s* = 0.13172(5) a rational number or algebraic constant? Candidates: 1/8 + 1/147 ≈ 0.1317.
 
 **Open Problem 2** (Lindblad embedding and C4).
-Is there a canonical CPTP/Lindblad embedding Φ = exp(L) canonically derived from the Born Channel's operator algebra? If so, does it reproduce the peripheral ℤ₂ at settlement times?
+A naive *real* generator is ruled out — Φ is singular and its −1 mode is simple, so it has no real logarithm (Remark 4.4) — so any embedding must be conditional or complexified. Is there nonetheless a canonical CPTP/Lindblad embedding Φ = exp(L) derived from the Born Channel's operator algebra? If so, does it reproduce the peripheral ℤ₂ at settlement times?
 
 **Open Problem 3** (SU(3) decomposition of 𝔭-sector).
 Does the 14-dimensional antisymmetric sector decompose as 8 ⊕ 6 under the SU(3) stabilizer of an imaginary octonion direction? Is that direction canonically selected?
