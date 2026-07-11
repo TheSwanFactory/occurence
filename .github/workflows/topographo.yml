@@ -1,20 +1,34 @@
-name: CI
+name: topographo
+
+# The library workflow: builds, tests, and releases the reusable `topographo`
+# package. It owns build / PyPI publish / API-docs pages. The consumer-side
+# audit lives in occurrence.yml.
 
 on:
   workflow_dispatch:
   pull_request:
+    paths:
+      - "topographo/**"
+      - "pyproject.toml"
+      - "uv.lock"
+      - ".github/workflows/topographo.yml"
   push:
     branches:
       - main
     tags:
       - "v*"
+    paths:
+      - "topographo/**"
+      - "pyproject.toml"
+      - "uv.lock"
+      - ".github/workflows/topographo.yml"
 
 permissions:
   contents: read
 
 jobs:
-  audit:
-    name: Run audit scripts
+  package:
+    name: Build and test topographo
     runs-on: ubuntu-latest
 
     steps:
@@ -31,33 +45,22 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Compile Python modules
-        run: |
-          uv run python -m py_compile \
-            occurrence_theory_audit.py \
-            exceptional_algebras_lab.py \
-            topographo/__init__.py \
-            topographo/core/__init__.py \
-            topographo/core/algebra.py \
-            topographo/core/cayley_dickson.py \
-            topographo/core/gates.py \
-            topographo/ssd/__init__.py \
-            topographo/ssd/channel.py \
-            topographo/ssd/sedenion.py
-
-      - name: Run unit tests
-        run: uv run pytest
+      - name: Run package tests
+        run: uv run pytest topographo/tests
 
       - name: Verify importable package API
         run: |
           uv run python - <<'PY'
           from topographo.core import CayleyDicksonAlgebra, verify_gates
           from topographo.ssd import SedenionAlgebra, average_metric_operator
+          from topographo.exceptional import Albert
 
           assert all(result.passed for result in verify_gates())
           assert CayleyDicksonAlgebra(8).dim == 8
           sedenions = SedenionAlgebra()
           assert average_metric_operator(sedenions, sedenions.sample_crack(4)).shape == (16, 16)
+          import numpy as np
+          assert Albert().det(np.array([2, 3, 5] + [0] * 24, float)) == 30.0
           PY
 
       - name: Verify isolated package install
@@ -65,13 +68,13 @@ jobs:
           uv pip install --target /tmp/topographo-install .
           cd /tmp
           PYTHONPATH=/tmp/topographo-install "${pythonLocation}/bin/python" - <<'PY'
-          import exceptional_algebras_lab
-          import occurrence_theory_audit
           import topographo
+          import topographo.exceptional
 
-          assert hasattr(exceptional_algebras_lab, "cayley_dickson_table")
-          assert hasattr(occurrence_theory_audit, "main")
           assert hasattr(topographo, "CayleyDicksonAlgebra")
+          assert hasattr(topographo.exceptional, "cayley_dickson_table")
+          # topographo.exceptional reuses the core table; it carries no copy.
+          assert topographo.exceptional.cayley_dickson_table is topographo.cayley_dickson_table
           PY
 
       - name: Build distribution
@@ -88,16 +91,9 @@ jobs:
             topographo.ssd \
             topographo.ssd.channel \
             topographo.ssd.sedenion \
+            topographo.exceptional \
+            topographo.exceptional.lab \
             -o site
-
-      - name: Run Occurrence Theory audit
-        run: uv run python occurrence_theory_audit.py
-
-      - name: Run Occurrence Theory audit console script
-        run: uv run occurrence-theory-audit
-
-      - name: Run exceptional algebra lab reproduction
-        run: uv run python exceptional_algebras_lab.py
 
       - name: Upload distribution artifacts
         uses: actions/upload-artifact@v4
@@ -106,7 +102,7 @@ jobs:
           path: dist/*
 
       - name: Upload Pages artifact
-        if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+        if: github.ref == 'refs/heads/main'
         uses: actions/upload-pages-artifact@v3
         with:
           path: site
@@ -114,7 +110,7 @@ jobs:
   publish:
     name: Publish to PyPI
     runs-on: ubuntu-latest
-    needs: audit
+    needs: package
     if: startsWith(github.ref, 'refs/tags/v')
     environment:
       name: pypi
@@ -136,8 +132,11 @@ jobs:
   pages:
     name: Publish API docs
     runs-on: ubuntu-latest
-    needs: audit
-    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+    needs: package
+    # The github-pages environment only allows the default branch, so restrict
+    # deploys to main. Tag pushes (v*) and branch dispatches build docs but do
+    # not deploy them.
+    if: github.ref == 'refs/heads/main'
     permissions:
       pages: write
       id-token: write

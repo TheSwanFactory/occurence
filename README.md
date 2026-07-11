@@ -16,33 +16,39 @@ measurement, interpretation, and conjecture using explicit ledger tags:
 
 ## Files
 
-- `topographo/` - reusable Python package for Cayley-Dickson algebra,
-  validation gates, operators, and SSD helpers.
-- `occurrence-theory.md` - main paper draft.
-- `occurrence_theory_audit.py` - numerical audit and verification script for
-  the algebraic claims. Every printed `[C]`/`[G]` line is a computed number
-  checked against a threshold; the script exits nonzero if any fails.
-- `VERIFICATION.md` - independent re-derivation of the paper's computational
-  claims, and the corrections it produced.
-- `exceptional_algebras_lab.py` - supporting exceptional algebra reproduction
-  module used by the audit.
+- `topographo/` - reusable Python **package** (the library) for Cayley-Dickson
+  algebra, validation gates, operators, SSD helpers, and the exceptional-algebra
+  (Albert / F4 / G2) layer. Ships to PyPI with its own tests under
+  `topographo/tests/`.
+- `verify/` - the **consumer** side: all Paper verification. Holds the canonical
+  first-party audits, the tests that guard them, and independent reviewer
+  results. See `verify/README.md` for the naming convention.
+- `occurrence-theory.md` - main paper draft (Paper I).
+- `verify/occurrence_i_audit.py` - numerical audit and verification script for
+  the Paper I algebraic claims. Every printed `[C]`/`[G]` line is a computed
+  number checked against a threshold; the script exits nonzero if any fails.
+- `verify/occurrence_i_cabarius.md` - independent re-derivation of the paper's
+  computational claims (reviewer: cabarius), and the corrections it produced.
 - `occurrence_theory_prompt.md` - source prompt and writing constraints used to
   generate the paper.
-- `.github/workflows/audit.yml` - CI workflow that compiles and runs the audit
-  scripts.
+- `.github/workflows/topographo.yml` - library CI: tests, builds, and releases
+  the `topographo` package.
+- `.github/workflows/occurrence.yml` - consumer CI: installs `topographo`, runs
+  the audit exit-code gate and the `verify/` tests.
 - `CHANGELOG.md` - release history for the package and audit artifacts.
 - `LICENSE` - MIT license.
 
 ## Requirements
 
-The audit script requires Python 3.11 or newer and NumPy. The verified
-`exceptional_algebras_lab` module is included in this repository and is used by
-the audit at runtime.
+The audit script requires Python 3.11 or newer and NumPy, plus the `topographo`
+package (which it imports for the verified algebra). The exceptional-algebra
+(Albert / F4 / G2) reproduction now lives inside the package as
+`topographo.exceptional`.
 
 `uv` is the preferred runner for local audit work:
 
 ```bash
-uv run python occurrence_theory_audit.py
+uv run python verify/occurrence_i_audit.py
 ```
 
 For editable package installation:
@@ -79,6 +85,8 @@ uv run pdoc \
   topographo.ssd \
   topographo.ssd.channel \
   topographo.ssd.sedenion \
+  topographo.exceptional \
+  topographo.exceptional.lab \
   -o site
 ```
 
@@ -87,13 +95,13 @@ uv run pdoc \
 From the repository root:
 
 ```bash
-uv run python occurrence_theory_audit.py
+uv run python verify/occurrence_i_audit.py
 ```
 
 To save the output:
 
 ```bash
-uv run python occurrence_theory_audit.py > audit_results.txt
+uv run python verify/occurrence_i_audit.py > audit_results.txt
 ```
 
 The audit exits `0` only if every certificate meets its threshold, and `1`
@@ -101,13 +109,9 @@ otherwise, so it is safe to gate CI on it. A passing run means the paper's
 `[C]`-tagged claims reproduce on this implementation. It does not mean the
 paper's `[I]` interpretations are correct; those are not tested.
 
-After installation, the same audit is also available as:
-
-```bash
-occurrence-theory-audit
-```
-
-CI runs the audit workflow on pull requests and pushes to `main`.
+CI runs two workflows on pull requests and pushes to `main`: `topographo.yml`
+(library: tests, build, release) and `occurrence.yml` (consumer: installs the
+package, runs this audit as an exit-code gate, and runs the `verify/` tests).
 
 ## Status
 

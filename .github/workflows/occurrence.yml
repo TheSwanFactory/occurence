@@ -1,0 +1,77 @@
+name: occurrence
+
+# The consumer workflow: occurrence (the paper, its audit, and reviewer
+# results) is a *consumer* of the topographo package, not a second package.
+# It installs topographo, runs the CI-gating audit, and runs the verify/ tests.
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "verify/**"
+      - "occurrence-theory*.md"
+      - "pyproject.toml"
+      - "uv.lock"
+      - ".github/workflows/occurrence.yml"
+  push:
+    branches:
+      - main
+    paths:
+      - "verify/**"
+      - "occurrence-theory*.md"
+      - "pyproject.toml"
+      - "uv.lock"
+      - ".github/workflows/occurrence.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    name: Run occurrence audit and verification
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Install topographo (plus pytest for the verify suite)
+        run: uv pip install --system . pytest
+
+      - name: Reviewer-independence guard
+        # Reviewer cells (occurrence_<paper>_<handle>.*, i.e. everything under
+        # verify/occurrence_* EXCEPT the first-party *_audit.* files) must not
+        # import topographo -- that independence is the whole value.
+        run: |
+          shopt -s nullglob
+          violations=0
+          for f in verify/occurrence_*; do
+            case "$f" in
+              verify/occurrence_*_audit.*) continue ;;
+            esac
+            if grep -nE '^[[:space:]]*(import|from)[[:space:]]+topographo' "$f"; then
+              echo "::error file=$f::reviewer cell must not import topographo"
+              violations=1
+            fi
+          done
+          if [ "$violations" -ne 0 ]; then
+            echo "Reviewer-independence guard failed."
+            exit 1
+          fi
+          echo "Reviewer-independence guard passed."
+
+      - name: Run Occurrence I audit (exit-code gate)
+        run: python verify/occurrence_i_audit.py
+
+      - name: Run verification tests
+        run: python -m pytest verify/

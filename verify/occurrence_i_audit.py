@@ -19,7 +19,7 @@ that this script does not check are printed as [I] (interpretation) or [X]
 (conjecture), never as certificates.
 
 Usage:
-  python3 occurrence_theory_audit.py > audit_results.txt
+  python3 verify/occurrence_i_audit.py > audit_results.txt
   echo $?   # 0 = every certificate passed; 1 = at least one failed
 
 Gates (must pass, on randomized inputs, not a single hardcoded basis pair):
@@ -71,7 +71,7 @@ def certify_equal(tag, label, got, want):
 try:
     from topographo.core import CayleyDicksonAlgebra, cayley_dickson_table
 except ImportError:
-    repo_root = Path(__file__).resolve().parent
+    repo_root = Path(__file__).resolve().parent.parent
     if str(repo_root) not in sys.path:
         sys.path.insert(0, str(repo_root))
     try:
@@ -912,7 +912,7 @@ def main():
     print("  citations check out, or the construction bears on physics. Those")
     print("  are tagged [I]/[X] in the paper and are not tested here.")
     print()
-    print("For details, see: occurrence-theory.md and VERIFICATION.md")
+    print("For details, see: occurrence-theory.md and verify/occurrence_i_cabarius.md")
     print()
     return 0
 
