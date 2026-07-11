@@ -31,6 +31,7 @@ provenance recorded in-file, not as a reviewer cell.
 | --- | --- | --- |
 | `occurrence_i_audit.py` | I | canonical audit (CI-gating) |
 | `occurrence_i_cabarius.md` | I | reviewer (cabarius) |
+| `occurrence_ii_audit.py` | II | canonical audit (CI-gating); loads `data/kraus84.npz` |
 | `test_*.py` | I | tests guarding the audit and theory claims |
 
 ## Adding a review
