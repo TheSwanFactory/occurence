@@ -59,7 +59,7 @@ The sedenion algebra 𝕊 is used exactly once: to determine which 84 operators 
 
 The 84 standard zero divisors of 𝕊 are classical objects: identified by Cawagas, organized by Moreno's homogeneous-space description of the pair variety [Moreno 1998], given combinatorial structure by de Marrais's "assessor" and box-kite analysis, reduced to seven triples with cycles and modes by Wilmot, and recently treated as a naturally reductive homogeneous space in the differential-geometric literature (arXiv:2411.18881). The exceptional group G₂ = Aut(𝕆) and its representation theory are likewise standard since Cartan.
 
-What does not appear in the prior literature, to the best of our knowledge after a systematic search, is any of the following: the treatment of the 84 left-multiplication operators as a *Kraus family*; the settlement channel Φ and its nine-eigenvalue spectrum; the identification of the canonical complex structure as the channel's −1 eigenmode; the Born-quotient transport identity; the peripheral-spectrum route from dissipation to unitarity; or the constant 𝔭 in any physical or spectral role. The algebraic raw material is known. The dynamical object built from it appears to be new.
+What does not appear in the prior literature, to the best of our knowledge after a systematic search, is any of the following: the treatment of the 84 left-multiplication operators as a *Kraus family*; the settlement channel Φ and its nine-eigenvalue spectrum; the identification of the canonical complex structure as the channel's −1 eigenmode; the Born-quotient transport identity; the peripheral-spectrum route from dissipation to unitarity; or the constant 𝔭 in any physical or spectral role. The algebraic raw material is known. The dynamical object built from it appears to be new. Numerous authors have explored octonionic and exceptional-algebraic approaches to physics; the present work differs in taking an exactly computable finite Kraus channel as the primary mathematical object, with the underlying nonassociative algebra entering only through the selection of the Kraus family.
 
 ### 1.4 Verification requirement and pre-publication audit
 
@@ -95,6 +95,16 @@ and there are exactly 7 · 6 · 2 = **84** of them. The diagonal case i = j give
 
 Because the Kₐ are real and antisymmetric, Φ is self-adjoint with respect to the trace pairing ⟨X, Y⟩ = Tr(XᵀY), and its spectrum is real.
 
+**Remark 2.4 (Heisenberg and Schrödinger pictures).** We formulate the Born Channel in the Heisenberg picture,
+
+  Φ(X) = Σₐ μₐ · Kₐᵀ X Kₐ,
+
+acting on observables. Its Hilbert–Schmidt adjoint is the corresponding Schrödinger-picture channel acting on density operators,
+
+  Φ∗(ρ) = Σₐ μₐ · Kₐ ρ Kₐᵀ.
+
+The two descriptions are equivalent. We use the Heisenberg picture because the channel's invariant operators, spectrum, and spine/pencil decomposition are most naturally expressed there.
+
 ### 2.2 Recovering the algebra's fingerprints from the family alone
 
 The following objects, used throughout, are derivable from (K, μ) with no sedenion input:
@@ -110,7 +120,7 @@ The following objects, used throughout, are derivable from (K, μ) with no seden
 
 ### 3.1 Equilibrium
 
-**Theorem 3.1 (CPTP). [FORCED]** Σₐ μₐ Kₐᵀ Kₐ = I and Φ(I) = I. Hence Φ is trace-preserving and unital: the maximally mixed state is invariant, and trace bookkeeping is exact for every state, not merely on average. Verified: ‖E[KᵀK] − I‖ = 1.0·10⁻¹⁴.
+**Theorem 3.1 (CPTP). [FORCED]** Σₐ μₐ Kₐᵀ Kₐ = I and Φ(I) = I. Hence the Heisenberg channel Φ is unital (Φ(I) = I) and its Schrödinger adjoint Φ∗ (Remark 2.4) is trace-preserving; being in Kraus form, Φ∗ is completely positive. The maximally mixed state is invariant, and trace bookkeeping is exact for every state, not merely on average. Verified: ‖E[KᵀK] − I‖ = 1.0·10⁻¹⁴.
 
 Equivalently, writing Mᵤ = LᵤᵀLᵤ (spectrum {0⁴, 1⁸, 2⁴} for every event): E[Mᵤ] = I. Averaged over the crack, annihilation (the 0-eigenvalue) and amplification (the 2-eigenvalue) cancel exactly.
 
@@ -309,8 +319,11 @@ If composition breaks the quotient structure, or if paths interfere incorrectly,
 **Important caveat:**
 The doubling axis e₈ is fixed by the full G₂ action. The SU(3) ⊂ G₂ is the stabilizer of an imaginary octonion direction (perpendicular to e₈), not of e₈ itself. The complex structure J = L_{e₈} and the imaginary octonion direction are distinct structures.
 
+**Relation to prior work:**
+The appearance of G₂ and the possible emergence of an SU(3) sector naturally invite comparison with earlier proposals relating exceptional algebra to particle physics (e.g. Baez & Huerta; Furey). Unlike those approaches, the present work begins from an exactly computable quantum channel rather than from algebraic identifications; whether the resulting structures coincide remains open.
+
 **Open:**
-Does the Born Channel dynamics canonically select an imaginary octonion direction—or another geometric structure—whose G₂ stabilizer is SU(3)? If so, does the resulting 14-dimensional sector admit an 8 ⊕ 6 decomposition compatible with the observed color gauge structure?
+The appearance of G₂ alone is *not* evidence for gauge theory. The conjecture is the stronger, more testable claim that the *dynamically selected* structures of the Born Channel canonically reduce the symmetry to an SU(3) sector with physical significance: does the Born Channel dynamics canonically select an imaginary octonion direction—or another geometric structure—whose G₂ stabilizer is SU(3)? If so, does the resulting 14-dimensional sector admit an 8 ⊕ 6 decomposition compatible with the observed color gauge structure?
 
 **Falsifier:**
 If the channel does not canonically select such a structure, or if the resulting decomposition is incompatible with 8 ⊕ 6, C3 fails.
