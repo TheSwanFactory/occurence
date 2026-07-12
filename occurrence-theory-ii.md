@@ -2,11 +2,11 @@
 
 ## Exact Sedenion-Derived Kraus Dynamics and Candidate Protophysics
 
-**Ernest N. Prabhakar** ([radicalcentrism.org](http://radicalcentrism.org) · [ihack.us](http://ihack.us)), **Bench** (Claude, Anthropic), and **Précis** (ChatGPT, OpenAI)
+**Ernest N. Prabhakar** ([radicalcentrism.org](http://radicalcentrism.org) · [ihack.us](http://ihack.us)), **Bench d/Claude** (Anthropic), and **Précis d'ChatGPT** (OpenAI)
 
 *Sequel to* [*Occurrence Theory: An Orientation of Sedenion Settlement Dynamics*](http://ihack.us/occurrence-theory/)
 
-**Version 0.6 — July 11, 2026 — READY FOR AUDIT**
+**Version 0.7 — July 11, 2026 — READY FOR HUMAN AUDIT**
 
 ---
 
