@@ -44,6 +44,7 @@ jobs:
         run: sage --version
 
       - name: Run every *.sage file
+        shell: bash
         run: |
           set -uo pipefail
           # Deterministic order; skip the git dir.
