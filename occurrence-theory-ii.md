@@ -323,7 +323,7 @@ The appearance of G₂ alone is *not* evidence for gauge theory, and the branchi
 **Falsifier:**
 If the channel selects no canonical SU(3), or if no sector's SU(3) content can be given color-gauge significance, C3 fails. (The 𝔭-sector specifically cannot supply it: it contains no octet.)
 
-> **Reassessment note.** This subsection was revised after `verify/occurrence_ii_reptheory.sage` showed the 𝔭-sector is `7 ⊕ 7`, not the adjoint. The relocation of the gauge question from the 𝔭-sector to the ±3/7 sectors is a substantive change to C3 and warrants author/specialist review.
+> **Reassessment note.** This subsection was revised after `verify/occurrence_ii_reptheory.sage` showed the 𝔭-sector is `7 ⊕ 7`, not the adjoint. The gauge question has accordingly been reframed (see the restated **Open Problem 3**): the octet lives in the ±3/7 sectors (`8 ⊕ 2·(3 ⊕ 3̄) ⊕ 1`), the 𝔭-sector supplies two matter families (`2·(3 ⊕ 3̄ ⊕ 1)`), and the open question is whether these sectors admit a unified gauge-theoretic reading. The multiplet content is verified; its physical interpretation remains [CONJECTURE] pending specialist review.
 
 ---
 
@@ -691,8 +691,13 @@ Is the stationary spine share s* = 0.13172(5) a rational number or algebraic con
 **Open Problem 2** (Lindblad embedding and C4).
 A naive *real* generator is ruled out — Φ is singular and its −1 mode is simple, so it has no real logarithm (Remark 4.4) — so any embedding must be conditional or complexified. Is there nonetheless a canonical CPTP/Lindblad embedding Φ = exp(L) derived from the Born Channel's operator algebra? If so, does it reproduce the peripheral ℤ₂ at settlement times?
 
-**Open Problem 3** (SU(3) gauge content — **REVISED**).
-Verified (`verify/occurrence_ii_reptheory.sage`): the dim-14 𝔭-sector is `7 ⊕ 7`, branching under the canonical SU(3) as `2·(3 ⊕ 3̄ ⊕ 1)` — **no octet**. The gluon octet lives instead in the ±3/7 sectors, each `7 ⊕ 14`, branching as `8 ⊕ 2·3 ⊕ 2·3̄ ⊕ 1`. **Revised question:** is the color-gauge structure carried by the ±3/7 sectors (not the 𝔭-sector)? Specifically, is an SU(3) canonically selected by the channel's dynamics under which the ±3/7 adjoint `14` supplies a physically meaningful gluon octet, and does the accompanying `2·(3 ⊕ 3̄)` admit a matter interpretation?
+**Open Problem 3** (Gauge structure of spectral sectors).
+Verified (`verify/occurrence_ii_reptheory.sage`):
+
+- the 𝔭-sector (`7 ⊕ 7`) branches as `2·(3 ⊕ 3̄ ⊕ 1)` under SU(3): two matter families, no octet;
+- the ±3/7 sectors (`7 ⊕ 14`) branch as `8 ⊕ 2·(3 ⊕ 3̄) ⊕ 1`: one octet, two matter families.
+
+Question: do these sectors have a unified gauge-theoretic interpretation? Does the Born Channel canonically select an SU(3) action, and if so, what is the physical meaning of the distinct multiplet structures in each sector?
 
 **Open Problem 4** (Continuum limit of Σ).
 What is the long-time geometric limit of the oriented settlement process on the annihilation lattice? Is a connected continuum manifold obtained? What are its dimension and metric?
