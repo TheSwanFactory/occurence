@@ -23,10 +23,13 @@ The script is [`occurrence_i_spectrum.sage`](occurrence_i_spectrum.sage). Either
 - paste it into **[SageMathCell](https://sagecell.sagemath.org)** (free, no
   login) and press *Evaluate*.
 
+It also runs in CI: the [`sage`](../.github/workflows/sage.yml) workflow executes
+every `.sage` cell in the `sagemath/sagemath` container on each pull request.
+
 ## Result
 
-Confirmed locally with SageMath 10.9 (`sage verify/occurrence_i_spectrum.sage`,
-exit `0`):
+Confirmed in CI and locally with SageMath 10.9
+(`sage verify/occurrence_i_spectrum.sage`, exit `0`):
 
 ```text
 === Channel spectrum (Theorem 3.12) — exact factorization ===
