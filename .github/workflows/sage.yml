@@ -36,9 +36,8 @@ jobs:
       options: --user root
 
     steps:
-      # v4 (Node 20) is the safe pin inside the Sage image's older userland.
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Report Sage version
         run: sage --version
