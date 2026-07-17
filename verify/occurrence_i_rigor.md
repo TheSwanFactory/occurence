@@ -208,21 +208,97 @@ differently. Three specific, falsifiable hypotheses, tested in
    ~2.2–2.6×10⁻⁴ by t≈150–200, then stays there through t=800. No
    late-time climb toward 1e-3.
 
-**None of the three hold up.** This is a genuine, unresolved discrepancy
-with the paper's stated figure — not a correction (the mechanism producing
-it isn't identified) and not dismissible as sampling noise (the effect is
-stable across four orders of magnitude in N, ten in tolerance, and out to
-T=800). Untested remaining hypotheses: a different chain construction or
-initial-condition convention in the original measurement (e.g. trajectories
-seeded on or near the crack rather than isotropically random elsewhere);
-lower-precision arithmetic in the original implementation (float32 rounding
-noise compounding over many multiplicative steps would inflate the
-apparent death rate in a way a tolerance sweep on float64-computed norms
-cannot reproduce); or a transcription/measurement error in the original
-§5.6 figure, which — unlike its neighbors s* and λ_q in the same
-measurement — carries no stated seed count or run size in the source
-material. This should be flagged as an open discrepancy in the paper
-rather than silently reconciled.
+**None of the three hold up (as first written).** ~~This is a genuine,
+unresolved discrepancy with the paper's stated figure — not a correction
+(the mechanism producing it isn't identified) and not dismissible as
+sampling noise (the effect is stable across four orders of magnitude in
+N, ten in tolerance, and out to T=800). Untested remaining hypotheses: a
+different chain construction or initial-condition convention in the
+original measurement (e.g. trajectories seeded on or near the crack
+rather than isotropically random elsewhere); lower-precision arithmetic
+in the original implementation (float32 rounding noise compounding over
+many multiplicative steps would inflate the apparent death rate in a way
+a tolerance sweep on float64-computed norms cannot reproduce); or a
+transcription/measurement error in the original §5.6 figure, which —
+unlike its neighbors s* and λ_q in the same measurement — carries no
+stated seed count or run size in the source material. This should be
+flagged as an open discrepancy in the paper rather than silently
+reconciled.~~
+
+**Resolved (see 6.3.2): it is a protocol difference, not noise, and not
+a discrepancy in need of reconciling.** The paragraph above was correct
+that N, tolerance, and horizon within the survival-conditioned protocol
+were not the explanation — but the real explanation was a different
+axis entirely, identified from the original session's raw code by Bench
+and confirmed here by exact reproduction.
+
+**6.3.2 Resolution: two different observables, both correct.** The
+original run that produced Measurement 5.6's figure never removes a
+trajectory. Its `runchain` resamples the event on annihilation and
+continues the *same* trajectory from the *same* state, in a `while`
+loop; the `deaths` counter accumulates annihilation **attempts**,
+including repeats inside that loop, over an ensemble in which no one
+ever dies. That is a different quantity from this review's
+survival-conditioned mortality rate, where an annihilated trajectory is
+permanently removed and excluded from all further statistics — and the
+surviving population is therefore selection-biased away from exactly the
+high-risk states that resampling keeps re-exposing.
+
+Implementing the original protocol exactly — 84-crack events, **x₀ = e₀
+for every trajectory** (not isotropically random, as this review had
+assumed), N = 25,000, T = 120, death threshold 1e-12, resample-on-death,
+counting attempts — reproduces the paper's figure precisely:
+
+| seed | attempt-rate (this reproduction) |
+|---|---|
+| 9 (original session's seed) | **0.00101** |
+| 1 | 0.00101 |
+| 2 | 0.00103 |
+| 3 | 0.00103 |
+| 4 | 0.00102 |
+
+Seed 9 matches the paper's printed value to the digit. This is not
+approximate agreement; it is exact reproduction of a specific number from
+a specific run, once the actual protocol (not the assumed one) is
+implemented. The 4–5× gap between 1.0×10⁻³ and this review's ~2.2×10⁻⁴ is
+therefore not a discrepancy to explain away — it is two correct
+measurements of two different things: an attempt rate under
+event-resampling, and a mortality rate under survival-conditioning. The
+gap between them is itself informative (it quantifies how strongly
+survivorship selection depletes high-risk states from a conditioned
+ensemble), which is thematically apt for a paper whose central measured
+constant is a survivorship tilt.
+
+**What this means for §6.3.1's three tests.** All three were run inside
+the survival-conditioned protocol, varying N, tolerance, and horizon
+within it — which correctly found no explanation there, because the
+difference was never inside that protocol. It was between protocols.
+The death-tolerance-convention hypothesis had the right shape (a
+convention difference) but the wrong axis (the threshold value, rather
+than kill-vs-resample).
+
+**Recommended correction for the paper**, in the spirit of the three
+corrections `occurrence_i_cabarius.md` already made: reword Measurement
+5.6 to name the observable precisely — e.g. "on the discrete crack,
+proposed events annihilate the state at rate 1.0×10⁻³ per
+trajectory-step (measured under event-resampling; N=25,000, T=120,
+single seed); the mortality rate of a survival-conditioned ensemble is
+lower, ≈2.2×10⁻⁴/step, the difference reflecting survivorship
+selection" — and cite both numbers side by side rather than only the
+first. This also supplies the missing provenance (seed count, run size)
+that §6.3.1 noted was absent for this constant alone among its
+neighbors.
+
+**One loose end genuinely closed, one noted for completeness.** The
+float32-arithmetic hypothesis raised in §6.3.1 is dead: the original
+session's dynamics module is float64 throughout, grep-verified, no
+`astype` or dtype coercion anywhere. Separately — all of this review's
+death-rate measurements (§6.3, §6.3.1, and the reproduction above) used
+the 84-point discrete crack sampler exclusively, never the continuum
+measure; the continuum case would be a third, distinct mechanism (deaths
+there are measure-zero events arising only from gradual float64
+underflow, not the discrete crack's structurally frequent exact
+annihilations) and was not measured in this review.
 
 **6.4 One representational note, not an error.** The 84-point crack, as
 enumerated by this review (fixing the first nonzero coordinate positive),
