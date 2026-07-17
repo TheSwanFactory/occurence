@@ -178,12 +178,51 @@ own §5.6 already documents the correct handling ("trajectories die (exact
 annihilation)... the survival-conditioned ensemble matches the continuum").
 Implementing that (discard a trajectory once its norm underflows below a
 tolerance, exclude it from all further steps and statistics) resolves it.
-One loose end: the death rate measured this way, ~2.0–2.4×10⁻⁴ per step,
-runs about 4–5× lower than the paper's stated ~1.0×10⁻³ per step. This
-doesn't bear on the Prop 4.2 question and wasn't chased down further — a
-plausible next-check item (tolerance convention? discrete-84-point vs.
-continuum sampling?) rather than a correction, since neither this review
-nor the cabarius review pins down its own death-rate tolerance explicitly.
+
+**6.3.1 Follow-up: is the death-rate discrepancy just noise, the way the
+Prop 4.2 concern was?** The death rate measured here, ~2.0–2.4×10⁻⁴ per
+step, runs about 4–5× lower than the paper's stated ~1.0×10⁻³ per step
+(the same §5.6 measurement). Given that the Prop 4.2 concern above turned
+out to be an unreplicated-small-sample artifact, the natural next
+hypothesis was that this is the same shape of problem. It checked out
+differently. Three specific, falsifiable hypotheses, tested in
+`occurrence_i_rigor_death_rate_followup.py`:
+
+1. *Does a small-N point estimate drift toward 1e-3?* Swept N from 200 to
+   20,000 at T=30 (matching the apparent scale of an informal check),
+   single seed each. Estimates range 1.7–4.3×10⁻⁴ with shrinking error
+   bars as N grows, centering on ~2×10⁻⁴ — noisy, but never drifting
+   toward 1e-3, and even the noisiest low-N estimate (4.3×10⁻⁴ at N=1000)
+   sits roughly 2.3× below the target with error bars that don't reach it.
+2. *Is the measured rate an artifact of the death-tolerance threshold?*
+   Swept the threshold from 1e-12 to 1e-1 (ten orders of magnitude).
+   The measured rate is completely flat (2.1687×10⁻⁴, identical to four
+   significant figures) from 1e-12 through 1e-2, moving only slightly at
+   the very loose 1e-1 threshold. Deaths are a hard collapse to exactly
+   0.0 in one step, not a graded approach — so no reasonable tolerance
+   choice changes the answer.
+3. *Does the rate keep climbing at longer horizons, i.e. is 1e-3 a
+   late-time value beyond what a short run sees?* Ran time-resolved
+   (50-step-binned) death rate out to T=800 at N=20,000. The rate rises
+   mildly from ~1.9×10⁻⁴ over the first 50 steps to a plateau of
+   ~2.2–2.6×10⁻⁴ by t≈150–200, then stays there through t=800. No
+   late-time climb toward 1e-3.
+
+**None of the three hold up.** This is a genuine, unresolved discrepancy
+with the paper's stated figure — not a correction (the mechanism producing
+it isn't identified) and not dismissible as sampling noise (the effect is
+stable across four orders of magnitude in N, ten in tolerance, and out to
+T=800). Untested remaining hypotheses: a different chain construction or
+initial-condition convention in the original measurement (e.g. trajectories
+seeded on or near the crack rather than isotropically random elsewhere);
+lower-precision arithmetic in the original implementation (float32 rounding
+noise compounding over many multiplicative steps would inflate the
+apparent death rate in a way a tolerance sweep on float64-computed norms
+cannot reproduce); or a transcription/measurement error in the original
+§5.6 figure, which — unlike its neighbors s* and λ_q in the same
+measurement — carries no stated seed count or run size in the source
+material. This should be flagged as an open discrepancy in the paper
+rather than silently reconciled.
 
 **6.4 One representational note, not an error.** The 84-point crack, as
 enumerated by this review (fixing the first nonzero coordinate positive),
