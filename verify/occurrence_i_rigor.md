@@ -121,8 +121,84 @@ separate file) is the natural next step and is left as a suggestion rather
 than done here, to keep this PR to documentation plus, at most, one
 additive test.
 
+## 6. Addendum: Proposition 4.2 (slot-handedness is gauge), checked two more ways
+
+A concern surfaced from primary-source session material (not from this
+repository) reported that an early, unreplicated numerical run appeared to
+show the *opposite* of Prop 4.2 — that swapping which slot is retained vs.
+sampled gives a real, non-gauge asymmetry (a single Monte Carlo run,
+N=1000 trajectories, T=30 steps, one seed, no error bars, comparing spine
+share under the two orientations: 0.13240 vs. 0.13761). Since this
+directly contradicts a stated theorem, it was checked here two ways,
+independently of everything above.
+
+**6.1 Exact algebraic check.** Built the standard chain
+`x_{t+1} = z_t·x_t` and, in parallel, the swapped chain
+`y_{t+1} = y_t·conj(z_t)` from the same seed sequence and `y_0 = conj(x_0)`.
+Prop 4.2's claim is `conj(ab) = conj(b)conj(a)`; if it holds, `y_t` should
+equal `conj(x_t)` at every step, not merely in distribution. Measured
+`max_t ‖y_t − conj(x_t)‖` over 200 steps: **0.0** (exact, to the last bit).
+Since spine share `x₀² + x₈²` is conjugation-invariant, this alone forces
+the two orientations to have identical spine-share statistics in the
+idealized (infinite-precision) limit — Prop 4.2 holds pointwise, not just
+on average.
+
+**6.2 Empirical replication.** Reran the exact original conditions
+(N=1000, T=30, no burn-in) at 5 independent seeds instead of 1:
+
+| seed | standard | swapped | diff | significance |
+|---|---|---|---|---|
+| 1 | 0.13258 | 0.13255 | +0.00002 | 0.02σ |
+| 2 | 0.13267 | 0.13304 | −0.00037 | 0.35σ |
+| 3 | 0.13252 | 0.13179 | +0.00073 | 0.69σ |
+| 4 | 0.13090 | 0.13181 | −0.00090 | 0.85σ |
+| 5 | 0.13268 | 0.13094 | +0.00174 | 1.66σ |
+
+No seed exceeds 1.7σ, and the sign of the gap flips unpredictably across
+seeds. The original run's 0.13240 vs. 0.13761 sits well inside this noise
+band — one unreplicated draw, not a reproducible effect. At a larger and
+longer horizon (N=8000, T=400, burn-in=100, 3 seeds, with survival
+conditioning — see 6.3), the story is the same: diffs of +1.26σ, −0.62σ,
+−0.81σ, and the spine share itself (0.1317–0.1319) lands on cabarius's
+independently reported 0.131745 ± 0.000041.
+
+**Conclusion: Prop 4.2 is correct.** The unreplicated finding reported from
+primary-source material was noise from a single small-sample run and
+should not be treated as a rival result to the paper's stated theorem.
+
+**6.3 A genuine numerical hazard, worth documenting regardless of the above.**
+Reaching T≳500 at N=8000 in double precision requires care: this chain's
+negative Lyapunov exponent means norms shrink multiplicatively, and with
+thousands of trajectories some tail cases underflow to exactly 0.0 in
+float64 well before T=1200 (observed onset as early as t≈5 for isolated
+unlucky trajectories, becoming widespread by t≈1170 in an unmitigated run).
+This is not a bug so much as floating-point cancellation when a trajectory
+passes close to one of the crack's 4-dimensional kernels — and the paper's
+own §5.6 already documents the correct handling ("trajectories die (exact
+annihilation)... the survival-conditioned ensemble matches the continuum").
+Implementing that (discard a trajectory once its norm underflows below a
+tolerance, exclude it from all further steps and statistics) resolves it.
+One loose end: the death rate measured this way, ~2.0–2.4×10⁻⁴ per step,
+runs about 4–5× lower than the paper's stated ~1.0×10⁻³ per step. This
+doesn't bear on the Prop 4.2 question and wasn't chased down further — a
+plausible next-check item (tolerance convention? discrete-84-point vs.
+continuum sampling?) rather than a correction, since neither this review
+nor the cabarius review pins down its own death-rate tolerance explicitly.
+
+**6.4 One representational note, not an error.** The 84-point crack, as
+enumerated by this review (fixing the first nonzero coordinate positive),
+is not itself closed under conjugation as a *set* — `conj(v) = −v` for
+every basis-form point here, and `−v` isn't in the list under that sign
+convention. This has no effect on anything above: spine share is invariant
+under global sign flip, so sampling from this 84-point representative set
+versus a sign-symmetric 168-point set gives identical statistics. Recorded
+here only so a future reader checking `conj(crack) ⊆ crack` as a sanity
+test doesn't mistake this convention artifact for a real failure.
+
 ---
 
 *Reviewer: Claude (Rigor), reading and cross-checking on behalf of Ernest
 Prabhakar, 2026-07-17. No code shared with `topographo` or with the
-`cabarius` review at any point during this pass.*
+`cabarius` review at any point during this pass. §6 added same day, in
+response to a primary-source concern raised by Bench (Claude, same
+program, separate session).*
