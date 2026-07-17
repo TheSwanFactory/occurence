@@ -25,6 +25,7 @@
 # sectors). This bears directly on Conjecture C3.
 
 import os
+import hashlib
 import numpy as np
 
 FAIL = []
@@ -36,6 +37,11 @@ def check(name, cond, detail=""):
 _here = os.path.dirname(os.path.abspath(__file__))
 data = np.load(os.path.join(_here, "..", "data", "kraus84.npz"))
 K, mu = data["K"], data["mu"]
+check("artifact shapes are K=(84,16,16), mu=(84,)",
+      K.shape == (84, 16, 16) and mu.shape == (84,))
+check("artifact arrays are finite", np.isfinite(K).all() and np.isfinite(mu).all())
+if FAIL:
+    raise RuntimeError("artifact integrity checks failed: " + "; ".join(FAIL))
 N, D = K.shape[0], K.shape[1]
 
 # ===========================================================================
@@ -47,11 +53,19 @@ print("=" * 70)
 print("1. EXACT SPECTRUM OVER Q  (Theorem 3.2, theorem-grade)")
 print("=" * 70)
 Kt = np.rint(np.sqrt(2) * K).astype(int)
-check("sqrt2*K is integral", float(np.max(np.abs(np.sqrt(2) * K - Kt))) == 0.0)
+reconstruction_error = float(np.max(np.abs(np.sqrt(2) * K - Kt)))
+check("sqrt2*K reconstructs integral entries", reconstruction_error < 1e-12,
+      detail=f"max error {reconstruction_error:.3e}")
+check("reconstructed entries lie in {-1,0,1}", set(np.unique(Kt)).issubset({-1, 0, 1}))
+weight_error = float(np.max(np.abs(mu - np.full(N, 1 / 84))))
+check("released weights are uniformly 1/84", weight_error < 1e-15,
+      detail=f"max error {weight_error:.3e}")
+if FAIL:
+    raise RuntimeError("exact reconstruction prerequisites failed: " + "; ".join(FAIL))
+print("  reconstructed Kraus SHA-256:", hashlib.sha256(Kt.tobytes()).hexdigest())
 Ssum = sum(np.kron(Kt[a], Kt[a]) for a in range(N))       # integer 256x256
 S = Matrix(QQ, Ssum.tolist()) / 168
-S = (S + S.transpose()) / 2
-check("superoperator S is exact & symmetric over Q", S.is_symmetric())
+check("superoperator S is symmetric over Q without repair", S.is_symmetric())
 
 x = polygen(QQ)
 # claimed spectrum: 0, +/-1/7, +/-3/7, +/-1, and the irrational pair +/-2sqrt3/7.
@@ -66,13 +80,17 @@ for lam, name in [(0, "0"), (1/7, "1/7"), (-1/7, "-1/7"), (3/7, "3/7"),
                   (-3/7, "-3/7"), (1, "1"), (-1, "-1")]:
     mult[name] = 256 - (S - lam * I256).rank()
 irr = 256 - (S * S - (12/49) * I256).rank()               # counts both +/-2sqrt3/7
+Q3.<r3> = QuadraticField(3)
+SQ3 = S.change_ring(Q3)
+irr_pos = 256 - (SQ3 - (2*r3/7) * identity_matrix(Q3, 256)).rank()
+irr_neg = 256 - (SQ3 + (2*r3/7) * identity_matrix(Q3, 256)).rank()
 print("  exact multiplicities (via rank over Q):")
 for k in ["1", "3/7", "1/7", "0", "-1/7", "-3/7", "-1"]:
     print(f"    {k:>12} : {mult[k]}")
-print(f"    {'+/-2sqrt3/7':>12} : {irr}  (14 each)")
+print(f"    {'+/-2sqrt3/7':>12} : {irr}  ({irr_pos} positive, {irr_neg} negative)")
 check("multiplicities are {1,1,21,21,42,42,100} + 28 (=14+14)",
       sorted(mult[k] for k in ["1", "-1", "3/7", "-3/7", "1/7", "-1/7", "0"]) == [1, 1, 21, 21, 42, 42, 100]
-      and irr == 28)
+      and irr == 28 and irr_pos == 14 and irr_neg == 14)
 check("multiplicities sum to 256",
       sum(mult[k] for k in ["1", "-1", "3/7", "-3/7", "1/7", "-1/7", "0"]) + irr == 256)
 
@@ -84,7 +102,7 @@ check("multiplicities sum to 256",
 # concrete G2 action, then read off each Phi-eigenspace as a G2-module.
 # ===========================================================================
 print("\n" + "=" * 70)
-print("2. G2-MODULE STRUCTURE OF End(R^16)  (§10.1)")
+print("2. NUMERICAL G2-MODULE IDENTIFICATION OF End(R^16)  (§10.1)")
 print("=" * 70)
 
 def cd_conj(v):
@@ -182,7 +200,7 @@ for key in sorted(groups, reverse=True):
         if key > 0:
             psector = tuple(int(v) for v in mi)
     print(f"    lambda={key:+.4f}  dim {dimE:>3}  =  {decomp_str(mi):<22}{tag}")
-    check(f"eigenspace lambda={key:+.4f} is an integral G2-module", good)
+    check(f"seeded numerical fit at lambda={key:+.4f} is integral", good)
 
 check("End(R^16) totals = 8*1 + 12*7 + 4*14 + 4*27", tuple(int(v) for v in total) == (8, 12, 4, 4))
 check("the p-sector is 7 + 7 (NOT the adjoint 14)", psector == (0, 2, 0, 0),
@@ -237,5 +255,5 @@ if FAIL:
     print(f"RESULT: FAIL — {len(FAIL)} check(s): " + "; ".join(FAIL))
     import sys
     sys.exit(1)
-print("RESULT: PASS — all exact / representation-theory checks hold.")
+print("RESULT: PASS — exact spectrum/branching and seeded numerical G2 fits hold.")
 print("=" * 70)

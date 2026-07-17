@@ -33,14 +33,16 @@ multiplicities:
 So Theorem 3.2's spectrum and multiplicities are **proven exactly**, including
 the irrational pair `±2√3/7` as the exact factor `x² − 12/49`.
 
-### 2. G₂-module structure of every eigenspace (§10.1)
+### 2. Seeded numerical G₂-module identification (§10.1)
 
 First a sanity check that G₂ genuinely *is* a symmetry: with the concrete action
 `R(g)X = g X gᵀ` (i.e. `g₁₆ ⊗ g₁₆` on vec-space), `‖[S, R(g)]‖ = 1.3·10⁻¹⁶` —
 Φ commutes with the G₂ action, so the eigenspaces really are G₂-modules.
 
-Building that action (via `Der(𝕆)`, dim 14) and reading each Φ-eigenspace as a
-G₂-module over the irreps `{1, 7, 14, 27}`:
+This section is strong, reproducible numerical evidence rather than an exact
+symbolic proof: it builds `Der(𝕆)` by floating-point SVD, exponentiates seeded
+random generators, diagonalizes the floating channel, and fits characters by
+least squares. Reading each Φ-eigenspace over `{1, 7, 14, 27}` gives:
 
 ```text
 λ = ±1     dim 1    :  1
@@ -84,7 +86,9 @@ symmetry.
 
 ## Status
 
-Exact spectrum, eigenspace naming, branching, and invariants all reproduce
-(exit `0`). The section-2/3 finding (𝔭-sector = `7 ⊕ 7`) is a substantive
+The exact spectrum, exact Weyl-character branching, invariant count, and
+seeded numerical eigenspace naming all reproduce (exit `0`). The numerical
+section-2 identification (`𝔭`-sector = `7 ⊕ 7`), combined with the exact
+section-3 branching, is a substantive
 correction to Conjecture C3 and is flagged in the paper for author/specialist
 review.

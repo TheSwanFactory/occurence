@@ -93,33 +93,41 @@ def Mmat(x):
 # ---------------------------------------------------------------------------
 neg_e0 = [(-1 if k == 0 else 0) for k in range(DIM)]
 
-gate_quadratic = all(cd_mul(E[i], E[i]) == neg_e0 for i in range(1, DIM))
+# A quadratic identity is determined by its values on basis vectors and pair
+# sums (polarization).  Use that spanning family rather than basis-only tests.
+pure_sedenion_probes = [E[i] for i in range(1, DIM)] + [
+    vadd(E[i], E[j]) for i in range(1, DIM) for j in range(i + 1, DIM)
+]
+gate_quadratic = all(
+    cd_mul(v, v) == [(-norm2(v) if k == 0 else 0) for k in range(DIM)]
+    for v in pure_sedenion_probes
+)
 gate_antisym = all((Lmat(E[i]) + Lmat(E[i]).T) == 0 for i in range(1, DIM))
 
-# Composition ||x y|| = ||x|| ||y|| on a hull. Test on the octonion hull (idx 0..7)
-# with deterministic rational octonions (composition fails on all of S, holds on hulls).
-def oct_elt(coeffs):
-    v = [QQ(0)] * DIM
-    for i, c in enumerate(coeffs):
-        v[i] = QQ(c)
-    return v
-xo = oct_elt([1, 2, -3, 0, 5, 0, -1, 4])
-yo = oct_elt([-2, 1, 0, 3, 0, -4, 2, 1])
-gate_composition = norm2(cd_mul(xo, yo)) == norm2(xo) * norm2(yo)
+# Composition is quadratic in each argument.  Basis vectors plus pair sums
+# polarize both slots and therefore check the identity for all octonions.
+oct_probes = [E[i] for i in range(8)] + [
+    vadd(E[i], E[j]) for i in range(8) for j in range(i + 1, 8)
+]
+gate_composition = all(
+    norm2(cd_mul(a, b)) == norm2(a) * norm2(b)
+    for a in oct_probes for b in oct_probes
+)
 
-# Moufang (ab)(ca) = a((bc)a) on octonion basis (idx 0..7).
+# Moufang is quadratic in a and linear in b,c.  Pair sums polarize the repeated
+# a slot; basis vectors span the other two slots.
 def moufang_ok(a, b, c):
     lhs = cd_mul(cd_mul(a, b), cd_mul(c, a))
     rhs = cd_mul(a, cd_mul(cd_mul(b, c), a))
     return lhs == rhs
-gate_moufang = all(moufang_ok(E[i], E[j], E[k])
-                   for i in range(8) for j in range(8) for k in range(8))
+gate_moufang = all(moufang_ok(a, E[j], E[k])
+                   for a in oct_probes for j in range(8) for k in range(8))
 
 print("=== Mandatory gates (exact over Q) ===")
 print("  composition ||xy||=||x||||y|| on octonion hull :", gate_composition)
-print("  antisymmetry L_x + L_x^T = 0 for pure basis     :", gate_antisym)
-print("  quadratic x^2 = -e0 for pure unit basis         :", gate_quadratic)
-print("  Moufang (ab)(ca) = a((bc)a) on octonion basis   :", gate_moufang)
+print("  antisymmetry L_x + L_x^T = 0 for all pure x      :", gate_antisym)
+print("  quadratic x^2 = -||x||^2 e0 (polarized)         :", gate_quadratic)
+print("  Moufang (ab)(ca) = a((bc)a) (polarized)         :", gate_moufang)
 assert gate_composition and gate_antisym and gate_quadratic and gate_moufang, \
     "a mandatory gate failed -- algebra implementation is not trustworthy"
 
@@ -147,11 +155,13 @@ Re8 = Rmat(E[8])
 
 print("\n=== Exact algebraic identities ===")
 
-# Master identity M_x = I + T_x, and T_x symmetric & traceless (Theorem 3.5).
-master = all(Mmat(E[i]) == I16 + Tmat(E[i]) for i in range(1, DIM))
-t_sym_tr = all(Tmat(E[i]) == Tmat(E[i]).T and Tmat(E[i]).trace() == 0
-               for i in range(1, DIM))
-print("  master identity M_x = I + T_x (Thm 3.5)          :", master)
+# The homogeneous form is M_x = ||x||^2 I + T_x.  Checking the same
+# polarization-spanning family proves it for every pure x; unit x gives the
+# paper's M_x = I + T_x statement.
+master = all(Mmat(v) == norm2(v) * I16 + Tmat(v) for v in pure_sedenion_probes)
+t_sym_tr = all(Tmat(v) == Tmat(v).T and Tmat(v).trace() == 0
+               for v in pure_sedenion_probes)
+print("  master identity M_x = ||x||^2 I + T_x (polarized):", master)
 print("  T_x symmetric and traceless (corollary)          :", t_sym_tr)
 assert master and t_sym_tr
 

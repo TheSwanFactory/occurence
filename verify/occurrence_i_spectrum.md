@@ -7,8 +7,10 @@ obligations (the four mandatory gates, forced equilibrium, the parity eigenvalue
 
 The numpy audit ([`occurrence_i_audit.py`](occurrence_i_audit.py)) certifies this
 spectrum **numerically** at threshold `1e-12`. This script upgrades it to an
-**exact symbolic** result. Every basic Kraus operator `L_z` has entries in
-`{0, ±1}`, so Φ is an exact rational `256×256` matrix and its characteristic
+**exact symbolic** result. Every normalized basic Kraus operator `L_z` has
+entries in `{0, ±1/√2}`; equivalently, the script uses the unnormalized
+integer matrices `L_w = √2 L_z` and inserts the resulting rational factor
+`1/2`. Thus Φ is an exact rational `256×256` matrix and its characteristic
 polynomial factors exactly over `ℚ` — no tolerance, no threshold.
 
 It is **self-contained**: it builds `𝕊 = A₄` from the Cayley–Dickson doubling over
