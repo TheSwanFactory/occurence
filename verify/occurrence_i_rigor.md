@@ -143,8 +143,9 @@ the two orientations to have identical spine-share statistics in the
 idealized (infinite-precision) limit — Prop 4.2 holds pointwise, not just
 on average.
 
-**6.2 Empirical replication.** Reran the exact original conditions
-(N=1000, T=30, no burn-in) at 5 independent seeds instead of 1:
+**6.2 Empirical replication.** Reran the reported scale
+(N=1000, T=30, no burn-in) with the gauge-equivalent chain construction
+from §6.1 at 5 independent seeds:
 
 | seed | standard | swapped | diff | significance |
 |---|---|---|---|---|
@@ -158,19 +159,24 @@ No replicated seed shows a consistent direction. However, the original
 0.13240 vs. 0.13761 gap is larger than every gap in this five-seed sample,
 so these reruns do **not** establish that it was ordinary sampling noise.
 The exact coupling in §6.1 proves that a correctly implemented pair of
-chains cannot differ in this observable; the historical result therefore
-indicates an implementation, coupling, or protocol mismatch that cannot be
-diagnosed from the reported aggregates alone. At a larger and
-longer horizon (N=8000, T=400, burn-in=100, 3 seeds, with survival
+chains cannot differ in this observable. A subsequent primary-source check
+located and reran the historical script, reproducing both printed values
+exactly. It was a different experiment: the standard chain started at e₀
+while the swapped chain started at the non-conjugate state e₁; it sampled
+the continuum crack rather than the discrete 84-point design used here; and
+the two loops consumed one RNG stream sequentially rather than sharing a
+conjugation-coupled event stream. The historical comparison therefore never
+tested Proposition 4.2's hypothesis. At a larger and longer horizon
+(N=8000, T=400, burn-in=100, 3 seeds, with survival
 conditioning — see 6.3), the story is the same: diffs of +1.50σ, −0.74σ,
 −0.97σ, and the spine share itself (0.1317–0.1319) lands on cabarius's
 independently reported 0.131745 ± 0.000041.
 
 **Conclusion: Prop 4.2 is correct.** This follows from the exact coupling,
-not from a post-hoc noise explanation. The unreplicated finding reported
-from primary-source material conflicts with that identity and should be
-treated as evidence of an unidentified implementation or protocol mismatch,
-not as a rival result to the theorem and not as confirmed sampling noise.
+not from a post-hoc noise explanation. The historical finding is exactly
+reproducible but is neither sampling noise nor a rival result: its mismatched
+initial conditions, sampler, and RNG streams define a comparison outside the
+theorem's coupling conditions.
 
 **6.3 A genuine numerical hazard, worth documenting regardless of the above.**
 Reaching T≳500 at N=8000 in double precision requires care: this chain's
