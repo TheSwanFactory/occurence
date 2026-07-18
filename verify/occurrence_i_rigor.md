@@ -165,8 +165,20 @@ exactly. It was a different experiment: the standard chain started at e₀
 while the swapped chain started at the non-conjugate state e₁; it sampled
 the continuum crack rather than the discrete 84-point design used here; and
 the two loops consumed one RNG stream sequentially rather than sharing a
-conjugation-coupled event stream. The historical comparison therefore never
-tested Proposition 4.2's hypothesis. At a larger and longer horizon
+conjugation-coupled event stream. These differences establish that the
+historical comparison never tested Proposition 4.2's hypothesis; they do not,
+by themselves, establish how much each difference contributed to the observed
+finite-sample gap.
+
+A controlled follow-up supplies that missing attribution. Across 500 exact
+replications of the historical continuum/endpoint protocol, the difference
+had mean −0.00014 and standard deviation 0.00527; the historical seed-30 value
+−0.00521 is only −0.96σ from that mean, with 157/500 runs at least as extreme.
+Separately, a paired 200-replication initialization test using the same event
+streams for e₀ and e₁ found an e₀−e₁ effect of 0.000045 (95% CI
+[−0.000437, 0.000526]). Thus no finite-time initialization effect was detected;
+the large historical gap is ordinary Monte Carlo variation for its actual,
+higher-variance continuum endpoint statistic. At a larger and longer horizon
 (N=8000, T=400, burn-in=100, 3 seeds, with survival
 conditioning — see 6.3), the story is the same: diffs of +1.50σ, −0.74σ,
 −0.97σ, and the spine share itself (0.1317–0.1319) lands on cabarius's
@@ -175,8 +187,11 @@ independently reported 0.131745 ± 0.000041.
 **Conclusion: Prop 4.2 is correct.** This follows from the exact coupling,
 not from a post-hoc noise explanation. The historical finding is exactly
 reproducible but is neither sampling noise nor a rival result: its mismatched
-initial conditions, sampler, and RNG streams define a comparison outside the
-theorem's coupling conditions.
+initial conditions and uncoupled design define a different finite-time
+comparison outside the theorem's coupling conditions. Under that experiment's
+actual reference distribution, the numerical gap is consistent with Monte
+Carlo variation; the earlier five-seed discrete-design comparison was simply
+the wrong reference distribution for establishing that fact.
 
 **6.3 A genuine numerical hazard, worth documenting regardless of the above.**
 Reaching T≳500 at N=8000 in double precision requires care: this chain's
