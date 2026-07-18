@@ -121,16 +121,18 @@ separate file) is the natural next step and is left as a suggestion rather
 than done here, to keep this PR to documentation plus, at most, one
 additive test.
 
-## 6. Addendum: Proposition 4.2 (slot-handedness is gauge), checked two more ways
+## 6. Addendum: handedness gauge and the historical role-exchange experiment
 
 A concern surfaced from primary-source session material (not from this
-repository) reported that an early, unreplicated numerical run appeared to
-show the *opposite* of Prop 4.2 — that swapping which slot is retained vs.
-sampled gives a real, non-gauge asymmetry (a single Monte Carlo run,
+repository): an early, unreplicated numerical run treated swapping which
+variable is retained vs. sampled as a detectable, algebra-internal asymmetry
+(a single Monte Carlo run,
 N=1000 trajectories, T=30 steps, one seed, no error bars, comparing spine
-share under the two orientations: 0.13240 vs. 0.13761). Since this
-directly contradicts a stated theorem, it was checked here two ways,
-independently of everything above.
+share under the two role assignments: 0.13240 vs. 0.13761). That historical
+verdict was in tension with Theorem 3.10(6)'s role-exchange invisibility, not
+with Proposition 4.2's narrower left/right-handedness gauge. Both results rest
+on the same conjugation identity, which is why the two questions were initially
+blurred; they are separated below.
 
 **6.1 Exact algebraic check.** Built the standard chain
 `x_{t+1} = z_t·x_t` and, in parallel, the swapped chain
@@ -143,28 +145,53 @@ the two orientations to have identical spine-share statistics in the
 idealized (infinite-precision) limit — Prop 4.2 holds pointwise, not just
 on average.
 
-**6.2 Empirical replication.** Reran the exact original conditions
-(N=1000, T=30, no burn-in) at 5 independent seeds instead of 1:
+**6.2 Historical role-exchange experiment.** Reran the reported scale
+(N=1000, T=30, no burn-in) with the gauge-equivalent chain construction
+from §6.1 at 5 independent seeds:
 
 | seed | standard | swapped | diff | significance |
 |---|---|---|---|---|
-| 1 | 0.13258 | 0.13255 | +0.00002 | 0.02σ |
-| 2 | 0.13267 | 0.13304 | −0.00037 | 0.35σ |
-| 3 | 0.13252 | 0.13179 | +0.00073 | 0.69σ |
-| 4 | 0.13090 | 0.13181 | −0.00090 | 0.85σ |
-| 5 | 0.13268 | 0.13094 | +0.00174 | 1.66σ |
+| 1 | 0.13258 | 0.13255 | +0.00002 | 0.03σ |
+| 2 | 0.13267 | 0.13304 | −0.00037 | 0.42σ |
+| 3 | 0.13252 | 0.13179 | +0.00073 | 0.81σ |
+| 4 | 0.13090 | 0.13181 | −0.00090 | 1.02σ |
+| 5 | 0.13268 | 0.13094 | +0.00174 | 1.91σ |
 
-No seed exceeds 1.7σ, and the sign of the gap flips unpredictably across
-seeds. The original run's 0.13240 vs. 0.13761 sits well inside this noise
-band — one unreplicated draw, not a reproducible effect. At a larger and
-longer horizon (N=8000, T=400, burn-in=100, 3 seeds, with survival
-conditioning — see 6.3), the story is the same: diffs of +1.26σ, −0.62σ,
-−0.81σ, and the spine share itself (0.1317–0.1319) lands on cabarius's
+No replicated seed shows a consistent direction. However, the original
+0.13240 vs. 0.13761 gap is larger than every gap in this five-seed sample,
+so these reruns do **not** establish that it was ordinary sampling noise.
+The exact coupling in §6.1 proves that a correctly implemented pair of
+chains cannot differ in this observable. A subsequent primary-source check
+located and reran the historical script, reproducing both printed values
+exactly. It was a different experiment: the standard chain started at e₀
+while the swapped chain started at the non-conjugate state e₁; it sampled
+the continuum crack rather than the discrete 84-point design used here; and
+the two loops consumed one RNG stream sequentially rather than sharing a
+conjugation-coupled event stream. These differences establish that the
+historical comparison never tested Proposition 4.2's coupling; they do not,
+by themselves, establish how much each difference contributed to the observed
+finite-sample gap.
+
+A controlled follow-up supplies that missing attribution. Across 500 exact
+replications of the historical continuum/endpoint protocol, the difference
+had mean −0.00014 and standard deviation 0.00527; the historical seed-30 value
+−0.00521 is only −0.96σ from that mean, with 157/500 runs at least as extreme.
+Separately, a paired 200-replication initialization test using the same event
+streams for e₀ and e₁ found an e₀−e₁ effect of 0.000045 (95% CI
+[−0.000437, 0.000526]). Thus no finite-time initialization effect was detected;
+the large historical gap is ordinary Monte Carlo variation for its actual,
+higher-variance continuum endpoint statistic. At a larger and longer horizon
+(N=8000, T=400, burn-in=100, 3 seeds, with survival
+conditioning — see 6.3), the story is the same: diffs of +1.50σ, −0.74σ,
+−0.97σ, and the spine share itself (0.1317–0.1319) lands on cabarius's
 independently reported 0.131745 ± 0.000041.
 
-**Conclusion: Prop 4.2 is correct.** The unreplicated finding reported from
-primary-source material was noise from a single small-sample run and
-should not be treated as a rival result to the paper's stated theorem.
+**Conclusion.** Proposition 4.2 is correct by the exact coupling in §6.1.
+Separately, the historical role-exchange statistic is exactly reproducible but
+does not contradict Theorem 3.10(6): under its actual reference distribution,
+the numerical gap is ordinary Monte Carlo variation. The earlier five-seed
+discrete-design comparison was simply the wrong reference distribution for
+establishing that fact.
 
 **6.3 A genuine numerical hazard, worth documenting regardless of the above.**
 Reaching T≳500 at N=8000 in double precision requires care: this chain's
@@ -180,9 +207,9 @@ Implementing that (discard a trajectory once its norm underflows below a
 tolerance, exclude it from all further steps and statistics) resolves it.
 
 **6.3.1 Follow-up: is the death-rate discrepancy just noise, the way the
-Prop 4.2 concern was?** The death rate measured here, ~2.0–2.4×10⁻⁴ per
+historical D3 concern was?** The death rate measured here, ~2.0–2.4×10⁻⁴ per
 step, runs about 4–5× lower than the paper's stated ~1.0×10⁻³ per step
-(the same §5.6 measurement). Given that the Prop 4.2 concern above turned
+(the same §5.6 measurement). Given that the historical D3 concern above turned
 out to be an unreplicated-small-sample artifact, the natural next
 hypothesis was that this is the same shape of problem. It checked out
 differently. Three specific, falsifiable hypotheses, tested in
